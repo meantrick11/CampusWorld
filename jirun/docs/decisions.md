@@ -183,3 +183,55 @@ scss 编译错误与平台特有 API 问题。不得把该脚本通过当作编�
 
 **复核时机**：项目负责人提供开发服务空间后，按 `tests/cloud/content-cases.md`
 的 C-01～C-29 逐条执行并记录。
+
+---
+
+## D-10 新增本地 H5 预览通道，并记录 uni-app CLI 的三处真实限制
+
+**状态：已决定**
+
+**背景**：项目负责人希望在电脑上直接查看界面，而本机长期没有 HBuilderX。
+为此新增 `apps/client-preview`：一个只承载 npm 工具链的预览工程，把
+`apps/client` 编译为 H5。它不修改 `apps/client` 任何文件，产物不用于发布。
+
+**决定**：把预览通道作为**开发期视觉验证手段**固定下来，并在文档中明确它
+不能替代 HBuilderX 的正式构建，也不能验证任何依赖云端的功能。
+
+**排查过程中从插件源码核实的四处行为**（不是猜测，均附出处）：
+
+1. **入口必须与 vite root 同目录**：uni-app 的 H5 入口 `index.html` 中
+   `src="/main"` 会被插件映射到 `UNI_INPUT_DIR` 下的 `main.js`
+   （`uni-h5-vite/dist/plugins/resolveId.js:24`）。HBuilderX 工程的
+   `index.html` 写的是 `/main.js`，因此不能直接把 HBuilderX 工程当作 CLI 工程用。
+   预览工程因此自带一份 `index.html`（写 `/main`），只把源码目录指向 `apps/client`。
+
+2. **平台插件集按「工作目录的 package.json 依赖名」加载**：`resolvePluginsByCliRoot`
+   读取 `<cwd>/package.json` 的 `dependencies`/`devDependencies` 键来定位平台插件包
+   （`vite-plugin-uni/dist/utils/plugin.js:92`）。以 `apps/client` 为工作目录时，
+   它的 `package.json` 是 DCloud 模块元数据、不含任何 `@dcloudio/*` 依赖，
+   **于是整个 H5 插件集不会被注册**——构建会打印「Build complete」却不包含任何页面
+   （曾实测产物仅 87 KB，无 `pages/`、无 `App.vue`）。因此预览工具链与依赖声明
+   必须留在 `apps/client-preview`。
+
+3. **JS 条件编译在 CLI 下只覆盖 `mp-weixin`**：`PreprocessorVitePlugin` 仅在
+   `!runByHBuilderX() && UNI_PLATFORM === 'mp-weixin'` 时注册
+   （`vite-plugin-uni/dist/configResolved/plugins/index.js:39`）。H5 平台下
+   `.js` 里的 `// #ifdef VUE3` 不生效，VUE2/VUE3 分支同时保留会导致重复声明
+   （首个报错为 `lang/i18n.js: Identifier "i18n" has already been declared`）。
+   预览配置用官方导出的 `preJs` 补上这一步，共覆盖 20 个文件
+   （业务目录 3 个、`uni_modules` 17 个）。
+
+4. **未关联服务空间时 H5 环境没有 uniCloud**：`common/appInit.js` 在模块顶层执行
+   `uniCloud.database()`，会抛 `uniCloud is not defined` 导致页面无法挂载。
+   预览注入 `preview/uniCloud-preview-shim.js`，**任何真实调用都会抛
+   「需要真实服务空间」，不返回假数据**，因此不会把预览误当成云能力已可用。
+
+**已验证结果**：`npm run preview:build` 编译成功（1.2 MB、42 个 chunk），
+浏览器中页面挂载并渲染出「广场」页与底部三个 tab。
+
+**未验证**：点击等交互未能验证——执行环境的内置浏览器没有可见画面，
+真实点击与截图都被拒绝，只能读 DOM 结构。因此「tab 切换可用」这一条**未证实**，
+需由人工在浏览器中确认。
+
+**约束**：预览通道不得被当作发布路径，也不得用于判定登录、发布、私聊、
+审核等云端功能是否可用。正式构建与云函数上传仍以 HBuilderX 为准。

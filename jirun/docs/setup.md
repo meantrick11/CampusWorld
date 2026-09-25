@@ -110,7 +110,38 @@ npm run check:pages   # 静态校验页面注册、tabBar 图标、uni_modules �
 准确的上传顺序与插件要求以 HBuilderX 实际界面为准；本机无 HBuilderX，
 上述顺序来自官方文档描述，**尚未真实验证**。
 
-## 5. 当前未验证事项
+## 5. 在电脑浏览器里看界面（无需 HBuilderX）
+
+如果只是想在电脑上查看界面效果与做视觉验证，可以不装 HBuilderX：
+`apps/client-preview` 是一个只承载 npm 工具链的预览工程，把 `apps/client`
+编译成 H5。它**不修改 `apps/client` 内任何文件**，产物也只用于查看。
+
+```bash
+cd jirun
+
+# 首次需要先安装预览工具链（约 450 个包）
+cd apps/client-preview && npm install && cd ..
+
+npm run preview:build   # 编译到 jirun/dist/h5
+npm run preview:serve   # 启动本地服务，默认 http://127.0.0.1:5180/
+```
+
+已实际验证的结果：编译成功，产物 1.2 MB、42 个 chunk，页面在浏览器中挂载并
+渲染出「广场」与底部三个 tab。
+
+必须知道的限制：
+
+- 这是**预览，不是交付产物**。它不受支持用于发布；微信小程序与云函数上传
+  仍然只能由 HBuilderX 完成。
+- 预览里没有 uniCloud。`preview/uniCloud-preview-shim.js` 注入了一个占位，
+  任何真实云端调用都会抛「需要真实服务空间」，不会返回假数据。因此预览能验证
+  布局与交互，**不能验证登录、发布、聊天等需要云端的功能**。
+- 它依赖三处针对 uni-app CLI 的适配，原因与依据都写在
+  `apps/client-preview/vite.config.js` 的注释里，并在
+  `docs/decisions.md` D-10 记录：CLI 的 JS 条件编译只覆盖 `mp-weixin`、
+  平台插件集按「工作目录的 package.json 依赖名」加载、预览案缺少 uniCloud。
+
+## 6. 当前未验证事项
 
 以下事项本机尚无条件执行，未获得任何真实结果：
 

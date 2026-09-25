@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') ||
+        CSS.supports('top: constant(a)'))
+      document.write(
+        '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' +
+        (coverSupport ? ', viewport-fit=cover' : '') + '" />')
+    </script>
+    <title>暨快跑（本地预览）</title>
+    <!--preload-links-->
+    <!--app-context-->
+  </head>
+  <body>
+    <div id="app"><!--app-html--></div>
+    <!--
+      这里写 /main 而不是 /main.js：uni-app 的 H5 插件会把 id 为 /main 的请求映射到
+      UNI_INPUT_DIR 下的 main.js（uni-h5-vite/dist/plugins/resolveId.js:24）。
+      源码目录由 UNI_INPUT_DIR 指向 apps/client，因此应用代码仍来自 apps/client，
+      本目录只承载本文件与 vite 配置。
+    -->
+    <script type="module" src="/main"></script>
+  </body>
+</html>

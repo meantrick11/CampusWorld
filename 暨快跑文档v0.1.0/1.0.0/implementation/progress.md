@@ -237,6 +237,49 @@ schema 总数由 77 变为 104，并显式列出被检查的 5 个集合名。
 用合成的违规 schema 写了 7 项测试（放开任一权限、权限缺失、非对象输入等）。
 没有去改真实 schema 来做验证——那本身就是一次放开权限的危险操作。
 
+## 本地 H5 预览通道（2026-09-25）
+
+**背景**：项目负责人希望能直接在电脑上看到界面效果。
+
+**新增路径**
+
+- `jirun/apps/client-preview/`：只承载 npm 工具链的预览工程（package.json、
+  index.html、vite.config.js），把 `apps/client` 编译为 H5。不修改
+  `apps/client` 任何文件。
+- `jirun/preview/uniCloud-preview-shim.js`：仅预览用的 uniCloud 占位，
+  真实调用一律报错，不返回假数据。
+- `jirun/scripts/build-preview.cjs`、`jirun/scripts/serve-preview.cjs`：
+  构建入口与本地静态服务。
+- `jirun/package.json` 新增 `preview:build`、`preview:serve`。
+
+**执行命令与真实结果**
+
+| 命令 | 退出码 | 实际结果 |
+|---|---|---|
+| `npm run preview:build` | 0 | 编译成功，产物 1.2 MB、42 个 chunk，含 `pages-messages-index`、`pages-mine-index` 与 `plaza` |
+| `npm run preview:serve` | — | 本地服务 `http://127.0.0.1:5180/` 返回 200 |
+| 浏览器加载 | — | 页面挂载成功，渲染出「广场」页与底部三个 tab（DOM 实测） |
+| `npm test` | 0 | 117 项通过，预览工作未影响既有测试 |
+| `npm run check:pages` | 0 | 未发现问题 |
+
+**排查中从插件源码核实的四处行为**（详见 `docs/decisions.md` D-10）
+
+1. H5 入口必须与 vite root 同目录，插件把 `/main` 映射到 `UNI_INPUT_DIR/main.js`。
+2. **平台插件集按「工作目录的 package.json 依赖名」加载**。以 `apps/client`
+   为工作目录时它不含任何 `@dcloudio/*` 依赖，H5 插件集不会注册——构建会打印
+   `Build complete` 却不含任何页面（实测产物仅 87 KB、无 `pages/`）。
+   这是最关键的一处，排查花了多轮。
+3. JS 条件编译在 CLI 下只覆盖 `mp-weixin`，H5 需要自己用官方 `preJs` 补上
+   （影响 20 个文件）。
+4. 未关联服务空间时 H5 无 uniCloud，会导致 `appInit.js` 顶层调用抛错、页面不挂载。
+
+**未完成**
+
+- **交互未证实**：执行环境的内置浏览器没有可见画面，真实点击与截图均被拒绝，
+  只能读取 DOM 结构。因此「tab 切换可用」尚未验证，需人工在浏览器确认。
+- 预览不能验证任何依赖云端的功能（登录、发布、私聊、审核）。
+- 预览产物不是交付物，正式构建与云函数上传仍以 HBuilderX 为准。
+
 ## 每次执行后追加
 
 每次记录日期、任务编号、变更路径、验证命令、退出码与实际结果、证据路径、

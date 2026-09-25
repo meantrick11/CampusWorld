@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "jirun-client-preview",
+  "version": "1.0.0",
+  "description": "本地 H5 预览工程：只用于在没有 HBuilderX 的机器上编译出可在浏览器查看的界面。它不修改 apps/client，产物也不用于发布；正式构建与云函数上传仍以 HBuilderX 为准。",
+  "scripts": {
+    "preview:h5": "node node_modules/@dcloudio/vite-plugin-uni/bin/uni.js build -p h5"
+  },
+  "//deps": "这些依赖必须声明在本目录的 package.json 中：vite-plugin-uni 会读取「当前工作目录的 package.json」的依赖名来加载平台插件集（dist/utils/plugin.js:92 resolvePluginsByCliRoot）。若本文件缺少这些依赖，H5 插件集不会被注册，构建会「成功」但不包含任何页面。",
+  "devDependencies": {
+    "@dcloudio/types": "3.4.31",
+    "@dcloudio/uni-app": "3.0.0-5020620260917001",
+    "@dcloudio/uni-cli-shared": "3.0.0-5020620260917001",
+    "@dcloudio/uni-components": "3.0.0-5020620260917001",
+    "@dcloudio/uni-h5": "3.0.0-5020620260917001",
+    "@dcloudio/uni-h5-vite": "3.0.0-5020620260917001",
+    "@dcloudio/vite-plugin-uni": "3.0.0-5020620260917001",
+    "@vue/compiler-sfc": "3.4.21",
+    "sass": "1.77.8",
+    "vite": "5.2.8",
+    "vue": "3.4.21",
+    "vue-i18n": "9.14.5"
+  }
+}
