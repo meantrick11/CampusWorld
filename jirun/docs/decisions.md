@@ -136,3 +136,50 @@ scss 编译错误与平台特有 API 问题。不得把该脚本通过当作编�
 
 **负责人需执行**：注册小程序取得 AppID、创建 uniCloud 开发服务空间、
 在 HBuilderX 中关联空间，并把服务端凭据填入云端配置或本机 `.local/`。
+
+---
+
+## D-09 云端仓储留有明确的未实现缺口，不写未经真实调用的数据库代码
+
+**状态：已决定（有意留白）**
+
+**背景**：T04 需要云对象 `jirun-content`／`jirun-admin` 在真实 uniCloud 空间中
+可用。云对象本身是薄适配层（token → actor → 已测试的服务 → 统一返回），风险低；
+但仓储实现涉及条件更新、并发唯一键、游标复合查询、聚合等行为，本机没有服务空间，
+无法做任何一次真实调用。
+
+**决定**：云对象按契约写好，`jirun-content/repository.js`
+**只导出会明确报错的工厂**，不写一段看起来能跑、实际未经调用的数据库代码。
+理由：计划要求「不杜撰框架接口」；一段貌似正确的数据库代码可能被直接部署并信任，
+比一个明确标注的缺口危险得多。
+
+**已在本仓库模板代码中核实的 API**（实现时可直接用，不是猜的）：
+
+- 条件更新 `db.collection(name).where(cond).update(obj)` 返回 `{ updated }`
+  —— `common/uni-stat/stat/mod/base.js:187` 与 `statResult.js:1358`
+- 查询 `.orderBy(key, 'desc').limit(n).get()` 返回 `{ data: [...] }`
+  —— `uni-sms-co/index.obj.js:83`、`base.js:316-327`
+- 条件构造 `db.command.in/gt/inc/exists` —— `uni-sms-co/index.obj.js:128-151`
+- 新增 `db.collection(name).add(obj)`（支持数组批量）—— `index.obj.js:93/203`
+- 指定文档写入 `.doc(id).set(obj)` —— `index.obj.js:310`
+- 云对象 `_before`／`_after` 钩子与 `this.getClientInfo()`／`this.getUniIdToken()`
+  —— `uni-sms-co/index.obj.js:30-53`
+- token 校验 `uniID.createInstance({clientInfo}).checkToken(token)` 返回含 `uid`
+  —— `uni-stat-receiver/index.obj.js:14-21`
+
+**实现时必须自行验证的事项**（已写在 `repository.js` 头部）：
+
+1. `listPublic` 的关键词、分类、区域字段位于版本表而非根表。建议先按根表条件分页，
+   再批量取本页版本后过滤；后过滤会使本页条数少于 limit，需要靠 nextCursor 续翻。
+   数据量增长后应改为在根表维护公开版本快照或使用聚合查询。
+2. 游标中 `createdAt` 与 `_id` 的复合比较需用 `db.command.or` 组合，
+   请对照实际 SDK 版本确认写法与字符串 `_id` 的比较行为。
+3. `reserveRequest` 依赖 `jr_request_keys` 的唯一索引；并发冲突会抛错，
+   必须捕获后回查已存在结果，而不是直接失败。
+4. 审核通过需同时写版本状态与根内容指针，应放入事务，或确认条件更新失败时可安全重试。
+
+**影响**：在真实服务空间调用 `jirun-content`／`jirun-admin` 会返回
+`DEPENDENCY_UNAVAILABLE` 与一句明确的说明，不会静默返回错误结果。
+
+**复核时机**：项目负责人提供开发服务空间后，按 `tests/cloud/content-cases.md`
+的 C-01～C-29 逐条执行并记录。

@@ -5,6 +5,7 @@
  */
 const fs = require('node:fs');
 const path = require('node:path');
+const schemaPermissions = require('./lib/schema-permissions.cjs');
 
 const root = path.resolve(__dirname, '..');
 
@@ -148,57 +149,58 @@ checkApp(path.join(root, 'apps/client'), 'client');
 checkApp(path.join(root, 'apps/admin'), 'admin');
 
 // 5. 业务集合必须禁止客户端直接读写，只能经云对象访问
+// 注意：schema 可能位于应用根目录的 uniCloud-<provider>/database，也可能位于
+// uni_modules/<模块>/uniCloud/database（本项目自有集合就在后者），两者都要检查。
+const DATABASE_FILE = /(?:^|\/)(uniCloud-[a-z]+|uniCloud)\/database\/[^/]+\.(schema|index)\.json$/;
+
+const indexes = [];
+const schemas = [];
+const permissionChecked = [];
+
 function checkSchemas(appDir, label) {
-  const databaseDirs = [
-    path.join(appDir, 'uniCloud-aliyun/database'),
-    path.join(appDir, 'uniCloud-cloud/database')
-  ];
-  for (const dir of databaseDirs) {
-    if (!fs.existsSync(dir)) continue;
-    for (const file of fs.readdirSync(dir)) {
-      const full = path.join(dir, file);
-      if (file.endsWith('.index.json')) {
-        try {
-          const parsed = JSON.parse(tolerantJson(fs.readFileSync(full, 'utf8')));
-          if (!Array.isArray(parsed)) problems.push(`[${label}] 索引文件不是数组：${file}`);
-          else {
-            for (const index of parsed) {
-              if (!index.IndexName || !index.MgoKeySchema || !Array.isArray(index.MgoKeySchema.MgoIndexKeys)) {
-                problems.push(`[${label}] 索引定义缺少 IndexName 或 MgoKeySchema：${file}`);
-              }
-            }
-            indexes.push(`${label}/${file}: ${parsed.length} 个索引`);
-          }
-        } catch (error) {
-          problems.push(`[${label}] 索引文件无法解析：${file}（${error.message}）`);
-        }
-        continue;
-      }
-      if (!file.endsWith('.schema.json')) continue;
+  for (const file of walk(appDir)) {
+    const relative = path.relative(appDir, file).replace(/\\/g, '/');
+    if (!DATABASE_FILE.test(relative)) continue;
+
+    const name = path.basename(file);
+    if (name.endsWith('.index.json')) {
       try {
-        const schema = JSON.parse(tolerantJson(fs.readFileSync(full, 'utf8')));
-        schemas.push(`${label}/${file}`);
-        if (!file.startsWith('jr_')) continue;
-        const permission = schema.permission || {};
-        for (const action of ['read', 'create', 'update', 'delete']) {
-          if (permission[action] !== false) {
-            problems.push(
-              `[${label}] 业务集合 ${file} 的 permission.${action} 不是 false，客户端可能绕过云对象直接访问`
-            );
+        const parsed = JSON.parse(tolerantJson(fs.readFileSync(file, 'utf8')));
+        if (!Array.isArray(parsed)) problems.push(`[${label}] 索引文件不是数组：${relative}`);
+        else {
+          for (const index of parsed) {
+            if (!index.IndexName || !index.MgoKeySchema || !Array.isArray(index.MgoKeySchema.MgoIndexKeys)) {
+              problems.push(`[${label}] 索引定义缺少 IndexName 或 MgoKeySchema：${relative}`);
+            }
           }
+          indexes.push(relative);
         }
       } catch (error) {
-        problems.push(`[${label}] schema 无法解析：${file}（${error.message}）`);
+        problems.push(`[${label}] 索引文件无法解析：${relative}（${error.message}）`);
       }
+      continue;
+    }
+
+    try {
+      const schema = JSON.parse(tolerantJson(fs.readFileSync(file, 'utf8')));
+      schemas.push(relative);
+      if (!schemaPermissions.isBusinessCollection(name)) continue;
+      permissionChecked.push(relative);
+      problems.push(...schemaPermissions.findPermissionViolations(schema, `[${label}] 业务集合 ${relative}`));
+    } catch (error) {
+      problems.push(`[${label}] schema 无法解析：${relative}（${error.message}）`);
     }
   }
 }
 
-const indexes = [];
-const schemas = [];
 checkSchemas(path.join(root, 'apps/client'), 'client');
 checkSchemas(path.join(root, 'apps/admin'), 'admin');
-notes.push(`解析 schema ${schemas.length} 个，索引文件 ${indexes.length} 个；jr_* 集合已禁止客户端直接读写`);
+notes.push(`解析 schema ${schemas.length} 个、索引文件 ${indexes.length} 个`);
+notes.push(
+  permissionChecked.length
+    ? `已逐一检查 ${permissionChecked.length} 个 jr_* 集合的客户端访问权限：${permissionChecked.map((p) => path.basename(p, '.schema.json')).join('、')}`
+    : '未发现 jr_* 集合，客户端权限检查未覆盖任何文件'
+);
 
 console.log('页面、引用与集合权限一致性检查');
 notes.forEach(n => console.log('  · ' + n));

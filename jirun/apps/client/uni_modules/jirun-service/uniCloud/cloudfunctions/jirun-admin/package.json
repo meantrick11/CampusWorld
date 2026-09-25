@@ -1,0 +1,10 @@
+{
+  "name": "jirun-admin",
+  "dependencies": {
+    "jirun-domain": "file:../common/jirun-domain",
+    "uni-id-common": "file:../../../uni_modules/uni-id-common/uniCloud/cloudfunctions/common/uni-id-common"
+  },
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

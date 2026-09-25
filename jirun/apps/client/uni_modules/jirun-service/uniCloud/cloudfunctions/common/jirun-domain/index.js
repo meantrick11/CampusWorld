@@ -11,5 +11,9 @@ module.exports = {
 	...require('./contact-policy.js'),
 	...require('./content-policy.js'),
 	...require('./profile-policy.js'),
-	...require('./validation.js')
+	...require('./validation.js'),
+	...require('./content-repository.js'),
+	...require('./content-service.js'),
+	...require('./cloud-response.js'),
+	...require('./actor-policy.js')
 };

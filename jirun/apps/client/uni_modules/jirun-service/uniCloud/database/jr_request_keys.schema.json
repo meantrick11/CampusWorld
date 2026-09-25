@@ -1,0 +1,36 @@
+{
+  "bsonType": "object",
+  "required": ["actorKey", "requestId", "state", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "记录 ID，由云端生成"
+    },
+    "actorKey": {
+      "bsonType": "string",
+      "description": "调用者标识（服务端 token 得出的用户 ID）"
+    },
+    "requestId": {
+      "bsonType": "string",
+      "description": "客户端生成的请求 ID，与 actorKey 组成唯一键"
+    },
+    "state": {
+      "bsonType": "string",
+      "description": "预留状态；完成后写入 result，失败时由调用方删除该行以释放",
+      "enum": ["reserved", "completed"]
+    },
+    "result": {
+      "bsonType": "object",
+      "description": "该 requestId 的最终结果，用于重复提交时原样返回"
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "预留时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

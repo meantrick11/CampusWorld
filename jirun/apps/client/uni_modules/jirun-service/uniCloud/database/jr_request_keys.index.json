@@ -1,0 +1,21 @@
+[
+  {
+    "IndexName": "actor_request_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "actorKey", "Direction": "1" },
+        { "Name": "requestId", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "created_at",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "createdAt", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

@@ -205,10 +205,37 @@
 
 **尚未完成**
 
-- `jirun-content` 与 `jirun-admin` 云对象（含真实 uniCloud 仓储实现）尚未编写。
-- 真实云端用例未执行：越权写入、读取未公开版本、并发幂等都需要真实服务空间，
-  记录见 `jirun/tests/cloud/content-cases.md`（待写）。
+- 云对象（`jirun-content`、`jirun-admin`）与统一返回、身份判定已写好并有测试；
+  但 `jirun-content/repository.js` 是**有意的未实现缺口**（见 `docs/decisions.md`
+  D-09）。原因：本机无服务空间，条件更新、并发唯一键与游标复合查询无法做任何
+  真实调用，计划明确禁止杜撰框架接口；一段貌似正确的数据库代码被直接部署的风险
+  大于一个明确标注的缺口。模板中已核实的 API 用法与实现注意事项已写在该文件头部。
+- 真实云端用例未执行：见 `jirun/tests/cloud/content-cases.md` 的 C-01～C-29。
 - 因此 T04 只到「本地可验证」，不能标记为「真实联调通过」。
+
+**云对象部分（2026-09-25 追加）**
+
+- 新建 `jirun-domain/cloud-response.js`（统一返回与错误白名单）与
+  `jirun-domain/actor-policy.js`（身份与审核权限判定），
+  新增 `tests/unit/cloud-boundary.test.cjs` 11 项测试。
+- 新建云对象 `jirun-content`、`jirun-admin` 及各自 `package.json`，
+  依赖声明格式照抄模板中 `uni-stat-receiver` 的写法。
+- 新建 `jr_request_keys` schema 与唯一索引（`actorKey + requestId`）。
+- 新建 `tests/cloud/content-cases.md`，列出 29 条真实云端用例。
+- 全量测试 117 项通过。
+
+**校验脚本自身的缺陷（重要）**
+
+给脚本加「业务集合必须禁止客户端直接读写」检查时，首版只扫描
+`apps/*/uniCloud-aliyun/database`，而本项目自有集合位于
+`uni_modules/jirun-service/uniCloud/database`——**检查实际没有跑到这些文件上，
+却仍打印出「jr_* 集合已禁止客户端直接读写」**，属于「报告通过但未检查」。
+修正为按路径模式发现任意位置（含 uni_modules 内）的 schema 与索引文件，
+schema 总数由 77 变为 104，并显式列出被检查的 5 个集合名。
+
+为证明判定逻辑真的有效，把权限判定抽到 `scripts/lib/schema-permissions.cjs`，
+用合成的违规 schema 写了 7 项测试（放开任一权限、权限缺失、非对象输入等）。
+没有去改真实 schema 来做验证——那本身就是一次放开权限的危险操作。
 
 ## 每次执行后追加
 

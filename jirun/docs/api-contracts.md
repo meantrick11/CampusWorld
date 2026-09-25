@@ -146,6 +146,43 @@ Unix 毫秒。写请求携带 `requestId` 去重，编辑同时携带 `expectedV
 | 资料冷却 | 7 天，昵称与头像独立 |
 | 私聊额度 | 对方未回复前 1 条 |
 
+## 6.1 云对象返回与身份（已实现，未在真实云端验证）
+
+云对象 `jirun-content`、`jirun-admin` 只做三件事：解析服务端身份、调用已测试的
+业务服务、套用统一返回。统一返回由 `jirun-domain/cloud-response.js` 实现并有测试：
+
+| 情况 | 返回 |
+|---|---|
+| 成功 | `{ errCode: 0, data }` |
+| 错误码在客户端可见白名单内 | `{ errCode, errMsg }`，errMsg 使用该错误自身的说明 |
+| 其余异常（含数据库报错） | `{ errCode: 'DEPENDENCY_UNAVAILABLE', errMsg: '服务暂时不可用，请稍后重试' }` |
+
+关键安全规则：**白名单外的错误不返回原始 message**，避免把内部栈、数据库地址或
+凭据带出；原始错误只写服务端日志。
+
+身份规则由 `jirun-domain/actor-policy.js` 实现并有测试：
+
+- `actor` 只能由 `uni-id-common.checkToken` 的结果构造，未登录为 `null`。
+- 审核权限来自 token 的 `role`（含 `admin`）或 `permission`（含
+  `jirun-content:review` / `jirun-admin`）。
+- 客户端传入的 `userId`、`isAdmin`、`role`、`isReviewer` **不参与判定**。
+
+## 6.2 幂等键集合 `jr_request_keys`
+
+`requestId` 去重依赖一个自有集合，而不是靠内存状态：
+
+| 字段 | 说明 |
+|---|---|
+| `actorKey` | 服务端 token 得出的用户 ID |
+| `requestId` | 客户端生成的请求 ID |
+| `state` | `reserved` / `completed` |
+| `result` | 完成后的结果，重复提交时原样返回 |
+| `createdAt` | 预留时间 |
+
+索引：`actorKey + requestId` 唯一（`MgoIsUnique: true`）。并发重复提交由唯一索引
+拒绝，调用方捕获冲突后回查已有结果，而不是直接失败。业务失败时删除该行释放键，
+因此失败不会永久占用 `requestId`。
+
 ## 7. 与验收场景的对应
 
 | SC | 场景 | 当前覆盖情况 |
