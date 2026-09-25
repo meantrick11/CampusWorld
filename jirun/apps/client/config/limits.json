@@ -1,0 +1,12 @@
+{
+  "_comment": "客户端展示与提交前提示用的数值上限。服务端以 jirun-domain/validation.js 的 LIMITS 为最终依据，两者必须一致，由 tests/unit/product-defaults.test.cjs 校验。",
+  "titleMax": 60,
+  "bodyMax": 3000,
+  "commentMax": 1000,
+  "chatMax": 1000,
+  "imageMax": 9,
+  "videoMax": 1,
+  "videoDurationMaxMs": 60000,
+  "imageSizeMaxBytes": 5242880,
+  "videoSizeMaxBytes": 52428800
+}

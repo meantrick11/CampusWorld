@@ -1,6 +1,6 @@
 # 执行进度与证据
 
-更新时间：2026-09-25。当前状态：T01 本地完成、待真实联调；T02 起未开始。
+更新时间：2026-09-25。当前状态：T01、T02 本地完成、待真实联调；T03 受阻。
 
 ## 执行环境
 
@@ -22,7 +22,7 @@
 | 任务 | 状态 | 实际变更／证据 | 下一步 |
 |---|---|---|---|
 | T01 工程与工具链 | 本地完成待联调 | 见下节 T01 记录 | 安装 HBuilderX 与微信开发者工具后补真实构建 |
-| T02 规则与数据契约 | 未开始 | 无 | 实现规则测试 |
+| T02 规则与数据契约 | 本地完成待联调 | 60 项规则测试真实通过；见下节 T02 记录 | T03 外部条件就绪后进入真实接入 |
 | T03 真实接入样板 | 受阻 | 无 AppID、无服务空间、无 uni-im | 取得外部条件后核验登录、媒体与聊天 |
 | T04 内容服务 | 未开始 | 无 | 建立四类信息服务 |
 | T05 媒体与审核管道 | 未开始 | 无 | 验证访问控制与视频 |
@@ -94,6 +94,59 @@
 
 **下一步可执行动作**：T02 建立 `common/jirun-domain` 规则模块与测试
 （不依赖云端，可真实运行）。
+
+## T02 记录（2026-09-25）
+
+**实际变更路径**
+
+- 新建模块：`jirun/apps/client/uni_modules/jirun-service/package.json`（uni_module 描述）
+- 新建公共模块：`.../jirun-service/uniCloud/cloudfunctions/common/jirun-domain/`
+  下的 `package.json`、`index.js`、`contact-policy.js`、`content-policy.js`、
+  `profile-policy.js`、`validation.js`
+- 新建测试：`jirun/tests/unit/` 下的 `contact-policy.test.cjs`、
+  `content-policy.test.cjs`、`profile-policy.test.cjs`、`validation.test.cjs`、
+  `product-defaults.test.cjs`
+- 新建配置：`jirun/apps/client/config/limits.json`、
+  `jirun/apps/client/config/product-defaults.js`
+- 新建文档：`jirun/docs/api-contracts.md`
+
+**执行命令与真实结果**
+
+先写测试并确认失败（红阶段），再实现并通过（绿阶段）。
+
+| 命令 | 退出码 | 实际结果 |
+|---|---|---|
+| `npm test`（实现前） | 1 | 4 个测试文件、0 通过、4 失败，失败原因均为 `MODULE_NOT_FOUND` |
+| `npm test -- contact-policy` | 0 | 9 项通过、0 失败 |
+| `npm test -- content-policy` | 0 | 5 项通过、0 失败 |
+| `npm test -- profile-policy` | 0 | 8 项通过、0 失败 |
+| `npm test -- validation` | 0 | 34 项通过、0 失败 |
+| `npm test`（全部） | 0 | 60 项通过、0 失败 |
+
+**覆盖的关键规则**
+
+- 私聊：未回复前发起者被拒（原因为 `WAITING_REPLY`）、对方可回复、拉黑优先于
+  已开放会话、未知状态拒绝、缺少身份拒绝、判定不修改入参。对应 SC-03、SC-04。
+- 可见性：仅 `published` 且版本 `approved` 才可公开读取；下架、删除、待审版本
+  一律不可读。对应 SC-09、SC-12。
+- 资料冷却：7 天边界（差 1 毫秒拒绝、满 7 天允许）、首次不消耗机会、
+  昵称与头像使用各自时间字段互不影响、缺少服务端时间默认拒绝。对应 SC-10。
+- 字段边界：负数与非整数数量、非整数金额、缺失起终区域、空校园墙、
+  图片与视频混排、媒体数量超限、标题与正文按 Unicode 码点计长；
+  赠送与面议不携带金额、金额类型必须携带非负整数金额。对应 SC-01、SC-02、
+  SC-06、SC-11。
+- 一致性：客户端 `limits.json` 与服务端 `LIMITS` 逐项相等，且无服务端未实现的
+  额外上限；断言默认值中不存在付费能力字段。对应 SC-13。
+
+**未完成项与阻碍**
+
+- 本任务只覆盖纯规则，未涉及数据库、存储与 IM；云端并发与真实 IM 绕过验证
+  属于 T03 与 T08，当前**未执行**。
+- 规则测试的通过不代表 SC 场景已通过：上表「对应」指规则层面已覆盖，
+  SC 的完整验收仍需 T11 的真实环境证据。
+
+**下一步可执行动作**：T04 建立 `content-service.js` 与内存仓储测试
+（依赖 T02 已完成，不依赖 T03 的真实云端条件）。
 
 ## 每次执行后追加
 

@@ -1,0 +1,7 @@
+{
+  "name": "jirun-domain",
+  "version": "1.0.0",
+  "description": "暨快跑纯业务规则与校验函数，可脱离 uniCloud 在 Node 下直接测试",
+  "main": "index.js",
+  "private": true
+}

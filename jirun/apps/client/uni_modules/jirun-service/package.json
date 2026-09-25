@@ -1,0 +1,53 @@
+{
+  "id": "jirun-service",
+  "displayName": "暨快跑业务服务",
+  "version": "1.0.0",
+  "description": "暨快跑的云对象与可独立测试的业务规则模块",
+  "keywords": ["jirun", "暨快跑"],
+  "repository": "",
+  "engines": {
+    "HBuilderX": "^3.6.0",
+    "uni-app": "^4.07"
+  },
+  "dcloudext": {
+    "sale": {
+      "regular": {
+        "price": "0.00"
+      },
+      "sourcecode": {
+        "price": "0.00"
+      }
+    },
+    "declaration": {
+      "ads": "无",
+      "data": "无",
+      "permissions": "无"
+    },
+    "type": "unicloud-template-project",
+    "darkmode": "x",
+    "i18n": "x",
+    "widescreen": "x"
+  },
+  "uni_modules": {
+    "dependencies": [],
+    "encrypt": [],
+    "platforms": {
+      "cloud": {
+        "tcb": "√",
+        "aliyun": "√",
+        "alipay": "√"
+      },
+      "client": {
+        "uni-app": {
+          "vue": {
+            "vue2": "x",
+            "vue3": "√"
+          },
+          "mp": {
+            "weixin": "√"
+          }
+        }
+      }
+    }
+  }
+}
