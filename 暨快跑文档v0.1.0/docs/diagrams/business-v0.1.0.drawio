@@ -1,0 +1,203 @@
+<mxfile host="Electron" pages="3">
+  <diagram id="01-main" name="目标主流程">
+    <mxGraphModel dx="2047" dy="1183" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="1260" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="01-main-title" parent="1" style="text;html=0;align=left;verticalAlign=middle;fontSize=26;fontFamily=Microsoft YaHei;" value="暨快跑｜目标主流程 · v0.1.0" vertex="1">
+          <mxGeometry height="45" width="1100" x="60" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-legend" parent="1" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Microsoft YaHei;" value="编号实线：主路径 ｜ 灰虚线：条件分支 ｜ 蓝：业务步骤 ｜ 橙：待定／外部依赖 ｜ 红：异常" vertex="1">
+          <mxGeometry height="40" width="1120" x="60" y="83" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-s0" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" value="用户填写固定 A→B 需求&#xa;同地点多件整单；不同地点另发" vertex="1">
+          <mxGeometry height="86" width="380" x="90" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-s1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#fff3db;strokeColor=#bc7d16;" value="下单支付后发布&#xa;支付成功可接单；接入待核实" vertex="1">
+          <mxGeometry height="86" width="380" x="90" y="305" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-s2" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" value="待接单大厅&#xa;展示条件，隐藏敏感信息" vertex="1">
+          <mxGeometry height="86" width="380" x="90" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-s3" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" value="判断并确认接单&#xa;需配合则先选五分钟取件区间" vertex="1">
+          <mxGeometry height="86" width="380" x="90" y="605" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-s4" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" value="实际取件并配送&#xa;动态码流程见第二页" vertex="1">
+          <mxGeometry height="86" width="380" x="90" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-s5" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#fff3db;strokeColor=#bc7d16;" value="先点已送达 → 用户确认结算&#xa;特殊附照片；3h未确认转代审" vertex="1">
+          <mxGeometry height="86" width="380" x="90" y="905" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-s6" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#fff3db;strokeColor=#bc7d16;" value="完成履约 → 报酬结算&#xa;资金到账结果单独跟踪" vertex="1">
+          <mxGeometry height="86" width="380" x="90" y="1055" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-b0" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" value="支付失败或结果不明&#xa;核实后重试，不重复扣款" vertex="1">
+          <mxGeometry height="86" width="380" x="780" y="305" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-b1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" value="截止仍无人接单&#xa;关闭并通知；已预付则退款" vertex="1">
+          <mxGeometry height="86" width="380" x="780" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-b2" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" value="取消／无法继续履约&#xa;进入第三页异常处理" vertex="1">
+          <mxGeometry height="86" width="380" x="780" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e0" edge="1" parent="1" source="01-main-s0" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" target="01-main-s1" value="1)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e1" edge="1" parent="1" source="01-main-s1" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" target="01-main-s2" value="2)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e2" edge="1" parent="1" source="01-main-s2" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" target="01-main-s3" value="3)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e3" edge="1" parent="1" source="01-main-s3" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" target="01-main-s4" value="4)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e4" edge="1" parent="1" source="01-main-s4" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" target="01-main-s5" value="5)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e5" edge="1" parent="1" source="01-main-s5" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" target="01-main-s6" value="6)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e6" edge="1" parent="1" source="01-main-s1" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" target="01-main-b0" value="异常">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e7" edge="1" parent="1" source="01-main-s2" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" target="01-main-b1" value="超时">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="01-main-e8" edge="1" parent="1" source="01-main-s4" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" target="01-main-b2" value="异常">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="02-pickup" name="动态码与取件流程">
+    <mxGraphModel dx="1240" dy="1110" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1240" pageHeight="1110">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="02-pickup-title" value="暨快跑｜动态码与取件流程 · v0.1.0" style="text;html=0;align=left;verticalAlign=middle;fontSize=26;fontFamily=Microsoft YaHei;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="25" width="1100" height="45" />
+        </mxCell>
+        <mxCell id="02-pickup-legend" value="编号实线：主路径 ｜ 灰虚线：条件分支 ｜ 蓝：业务步骤 ｜ 橙：待定／外部依赖 ｜ 红：异常" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Microsoft YaHei;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="83" width="1120" height="40" />
+        </mxCell>
+        <mxCell id="02-pickup-s0" value="需用户即时配合的订单&#xa;接单前选到站区间并同步用户" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="155" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-s1" value="点击“索要动态码”&#xa;通知用户；较久未回可电话联系" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="305" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-s2" value="用户响应并上传&#xa;三分钟有效期需现场核实" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#fff3db;strokeColor=#bc7d16;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="455" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-s3" value="驿站核验代取权限&#xa;核对本单包裹，授权方式待核实" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#fff3db;strokeColor=#bc7d16;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="605" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-s4" value="实际取得正确物品&#xa;拿到码不等于取件完成" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="755" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-s5" value="确认已取件，开始配送&#xa;送往用户指定交付位置" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="905" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-b0" value="联系失败，实际尚未取件&#xa;按约到站等待三分钟可自行终止" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="780" y="455" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-b1" value="拒绝代取／物品不符&#xa;暂停，联系用户协商" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="780" y="605" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-b2" value="只取到部分物品&#xa;双方确认减件及金额后继续" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="780" y="755" width="380" height="86" />
+        </mxCell>
+        <mxCell id="02-pickup-e0" value="1)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="02-pickup-s0" target="02-pickup-s1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="02-pickup-e1" value="2)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="02-pickup-s1" target="02-pickup-s2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="02-pickup-e2" value="3)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="02-pickup-s2" target="02-pickup-s3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="02-pickup-e3" value="4)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="02-pickup-s3" target="02-pickup-s4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="02-pickup-e4" value="5)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="02-pickup-s4" target="02-pickup-s5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="02-pickup-e5" value="受阻" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" edge="1" parent="1" source="02-pickup-s2" target="02-pickup-b0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="02-pickup-e6" value="受阻" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" edge="1" parent="1" source="02-pickup-s3" target="02-pickup-b1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="02-pickup-e7" value="部分取件" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" edge="1" parent="1" source="02-pickup-s4" target="02-pickup-b2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="03-exceptions" name="异常处理流程（统一协商原则）">
+    <mxGraphModel dx="1240" dy="1110" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1240" pageHeight="1110">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="03-exceptions-title" value="暨快跑｜异常处理流程（统一协商原则） · v0.1.0" style="text;html=0;align=left;verticalAlign=middle;fontSize=26;fontFamily=Microsoft YaHei;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="25" width="1100" height="45" />
+        </mxCell>
+        <mxCell id="03-exceptions-legend" value="编号实线：主路径 ｜ 灰虚线：条件分支 ｜ 蓝：业务步骤 ｜ 橙：待定／外部依赖 ｜ 红：异常" style="text;html=0;align=left;verticalAlign=middle;fontSize=16;fontFamily=Microsoft YaHei;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="83" width="1120" height="40" />
+        </mxCell>
+        <mxCell id="03-exceptions-s0" value="发现问题，告知对方&#xa;请求通知／交流频道／电话" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="155" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-s1" value="核实当前履约事实&#xa;是否接单、物品位置、资金状态" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="305" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-s2" value="尝试协商能否继续&#xa;能继续返回原流程；否则分阶段" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="455" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-s3" value="记录双方处理结果&#xa;普通取消双方同意；失联按规则" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="605" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-s4" value="执行处理并通知&#xa;未取件可协商退出；已取件先交接" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#eaf2ff;strokeColor=#3974c6;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="755" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-s5" value="跟踪资金与结果&#xa;正常取消原路退款；完成才获酬" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#fff3db;strokeColor=#bc7d16;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="905" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-b0" value="取件状态不明&#xa;继续核实；不得立即重复派单" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="780" y="305" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-b1" value="未取件且满足三分钟失联条件&#xa;自行终止、通知用户并原路退款" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="780" y="455" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-b2" value="已取件／协商变更&#xa;记录新范围、金额或后续交接" style="rounded=1;whiteSpace=wrap;html=0;fontSize=16;fontFamily=Microsoft YaHei;fillColor=#ffebeb;strokeColor=#bf5050;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="780" y="605" width="380" height="86" />
+        </mxCell>
+        <mxCell id="03-exceptions-e0" value="1)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="03-exceptions-s0" target="03-exceptions-s1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="03-exceptions-e1" value="2)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="03-exceptions-s1" target="03-exceptions-s2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="03-exceptions-e2" value="3)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="03-exceptions-s2" target="03-exceptions-s3">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="03-exceptions-e3" value="4)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="03-exceptions-s3" target="03-exceptions-s4">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="03-exceptions-e4" value="5)" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;" edge="1" parent="1" source="03-exceptions-s4" target="03-exceptions-s5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="03-exceptions-e5" value="未查清" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" edge="1" parent="1" source="03-exceptions-s1" target="03-exceptions-b0">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="03-exceptions-e6" value="未取件" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" edge="1" parent="1" source="03-exceptions-s2" target="03-exceptions-b1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="03-exceptions-e7" value="已取件" style="html=0;rounded=0;endArrow=block;labelBackgroundColor=#ffffff;fontSize=15;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;strokeColor=#7a7a7a;" edge="1" parent="1" source="03-exceptions-s3" target="03-exceptions-b2">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

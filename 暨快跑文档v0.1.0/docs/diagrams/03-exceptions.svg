@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1110" viewBox="0 0 1240 1110">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#63748b"/></marker></defs>
+<rect width="1240" height="1110" fill="#ffffff"/>
+<text x="60" y="56.166666666666664" font-family="Microsoft YaHei, sans-serif" font-size="26" fill="#24344c">暨快跑｜异常处理流程（统一协商原则） · v0.1.0</text>
+<text x="60" y="108.33333333333333" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">编号实线：主路径 ｜ 灰虚线：条件分支 ｜ 蓝：业务步骤 ｜ 橙：待定／外部依赖 ｜ 红：异常</text>
+<rect x="90" y="155" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="280.0" y="189" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">发现问题，告知对方</text>
+<text x="280.0" y="215" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">请求通知／交流频道／电话</text>
+<rect x="90" y="305" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="280.0" y="339" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">核实当前履约事实</text>
+<text x="280.0" y="365" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">是否接单、物品位置、资金状态</text>
+<rect x="90" y="455" width="380" height="86" rx="12" fill="#eaf2ff" stroke="#3974c6"/>
+<text x="280.0" y="489" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">尝试协商能否继续</text>
+<text x="280.0" y="515" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">能继续返回原流程；否则分阶段</text>
+<rect x="90" y="605" width="380" height="86" rx="12" fill="#eaf2ff" stroke="#3974c6"/>
+<text x="280.0" y="639" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">记录双方处理结果</text>
+<text x="280.0" y="665" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">普通取消双方同意；失联按规则</text>
+<rect x="90" y="755" width="380" height="86" rx="12" fill="#eaf2ff" stroke="#3974c6"/>
+<text x="280.0" y="789" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">执行处理并通知</text>
+<text x="280.0" y="815" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">未取件可协商退出；已取件先交接</text>
+<rect x="90" y="905" width="380" height="86" rx="12" fill="#fff3db" stroke="#bc7d16"/>
+<text x="280.0" y="939" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">跟踪资金与结果</text>
+<text x="280.0" y="965" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">正常取消原路退款；完成才获酬</text>
+<rect x="780" y="305" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="970.0" y="339" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">取件状态不明</text>
+<text x="970.0" y="365" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">继续核实；不得立即重复派单</text>
+<rect x="780" y="455" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="970.0" y="489" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">未取件且满足三分钟失联条件</text>
+<text x="970.0" y="515" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">自行终止、通知用户并原路退款</text>
+<rect x="780" y="605" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="970.0" y="639" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">已取件／协商变更</text>
+<text x="970.0" y="665" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">记录新范围、金额或后续交接</text>
+<path d="M280.0 241 L280.0 305" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="278.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">1)</text>
+<path d="M280.0 391 L280.0 455" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="428.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">2)</text>
+<path d="M280.0 541 L280.0 605" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="578.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">3)</text>
+<path d="M280.0 691 L280.0 755" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="728.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">4)</text>
+<path d="M280.0 841 L280.0 905" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="878.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">5)</text>
+<path d="M470 348.0 L780 348.0" stroke="#63748b" stroke-width="1.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="625.0" y="338.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">未查清</text>
+<path d="M470 498.0 L780 498.0" stroke="#63748b" stroke-width="1.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="625.0" y="488.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">未取件</text>
+<path d="M470 648.0 L780 648.0" stroke="#63748b" stroke-width="1.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="625.0" y="638.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">已取件</text>
+</svg>

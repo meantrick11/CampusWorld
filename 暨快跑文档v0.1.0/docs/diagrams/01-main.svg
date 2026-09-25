@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1260" viewBox="0 0 1240 1260">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#63748b"/></marker></defs>
+<rect width="1240" height="1260" fill="#ffffff"/>
+<text x="60" y="56.166666666666664" font-family="Microsoft YaHei, sans-serif" font-size="26" fill="#24344c">暨快跑｜目标主流程 · v0.1.0</text>
+<text x="60" y="108.33333333333333" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">编号实线：主路径 ｜ 灰虚线：条件分支 ｜ 蓝：业务步骤 ｜ 橙：待定／外部依赖 ｜ 红：异常</text>
+<rect x="90" y="155" width="380" height="86" rx="12" fill="#eaf2ff" stroke="#3974c6"/>
+<text x="280.0" y="189" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">用户填写固定 A→B 需求</text>
+<text x="280.0" y="215" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">同地点多件整单；不同地点另发</text>
+<rect x="90" y="305" width="380" height="86" rx="12" fill="#fff3db" stroke="#bc7d16"/>
+<text x="280.0" y="339" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">下单支付后发布</text>
+<text x="280.0" y="365" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">支付成功可接单；接入待核实</text>
+<rect x="90" y="455" width="380" height="86" rx="12" fill="#eaf2ff" stroke="#3974c6"/>
+<text x="280.0" y="489" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">待接单大厅</text>
+<text x="280.0" y="515" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">展示条件，隐藏敏感信息</text>
+<rect x="90" y="605" width="380" height="86" rx="12" fill="#eaf2ff" stroke="#3974c6"/>
+<text x="280.0" y="639" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">判断并确认接单</text>
+<text x="280.0" y="665" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">需配合则先选五分钟取件区间</text>
+<rect x="90" y="755" width="380" height="86" rx="12" fill="#eaf2ff" stroke="#3974c6"/>
+<text x="280.0" y="789" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">实际取件并配送</text>
+<text x="280.0" y="815" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">动态码流程见第二页</text>
+<rect x="90" y="905" width="380" height="86" rx="12" fill="#fff3db" stroke="#bc7d16"/>
+<text x="280.0" y="939" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">先点已送达 → 用户确认结算</text>
+<text x="280.0" y="965" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">特殊附照片；3h未确认转代审</text>
+<rect x="90" y="1055" width="380" height="86" rx="12" fill="#fff3db" stroke="#bc7d16"/>
+<text x="280.0" y="1089" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">完成履约 → 报酬结算</text>
+<text x="280.0" y="1115" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">资金到账结果单独跟踪</text>
+<rect x="780" y="305" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="970.0" y="339" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">支付失败或结果不明</text>
+<text x="970.0" y="365" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">核实后重试，不重复扣款</text>
+<rect x="780" y="455" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="970.0" y="489" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">截止仍无人接单</text>
+<text x="970.0" y="515" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">关闭并通知；已预付则退款</text>
+<rect x="780" y="755" width="380" height="86" rx="12" fill="#ffebeb" stroke="#bf5050"/>
+<text x="970.0" y="789" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#24344c">取消／无法继续履约</text>
+<text x="970.0" y="815" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#24344c">进入第三页异常处理</text>
+<path d="M280.0 241 L280.0 305" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="278.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">1)</text>
+<path d="M280.0 391 L280.0 455" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="428.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">2)</text>
+<path d="M280.0 541 L280.0 605" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="578.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">3)</text>
+<path d="M280.0 691 L280.0 755" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="728.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">4)</text>
+<path d="M280.0 841 L280.0 905" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="878.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">5)</text>
+<path d="M280.0 991 L280.0 1055" stroke="#63748b" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<text x="302.0" y="1028.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">6)</text>
+<path d="M470 348.0 L780 348.0" stroke="#63748b" stroke-width="1.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="625.0" y="338.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">异常</text>
+<path d="M470 498.0 L780 498.0" stroke="#63748b" stroke-width="1.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="625.0" y="488.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">超时</text>
+<path d="M470 798.0 L780 798.0" stroke="#63748b" stroke-width="1.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<text x="625.0" y="788.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#42536b">异常</text>
+</svg>

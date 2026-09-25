@@ -1,0 +1,29 @@
+# 本地凭据、个人配置与真实密钥（不得提交）
+.local/
+*.local.*
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# uni-app / HBuilderX 构建产物
+unpackage/
+dist/
+dist-*/
+.hbuilderx/
+
+# 编辑器与操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# drawio 自动保存与锁定文件
+.$*.bkp
+.$*.dwl
