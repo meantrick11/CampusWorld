@@ -11,71 +11,13 @@
  */
 
 import { sampleContents, sampleMine } from './local-sample-data.js';
+import { hasCloud, callCloud, toError, ERROR_TEXT } from './cloud-call.js';
 
 const CLOUD_OBJECT = 'jirun-content';
 
-/** 与 jirun-domain/cloud-response.js 的客户端可见错误码保持一致。 */
-export const ERROR_TEXT = {
-	AUTH_REQUIRED: '请先登录',
-	FORBIDDEN: '没有操作权限',
-	INVALID_INPUT: '提交的内容不符合要求',
-	VERSION_CONFLICT: '内容已被修改，请刷新后重试',
-	CONTENT_UNAVAILABLE: '该内容暂不可查看',
-	MEDIA_NOT_READY: '媒体尚未准备好，请稍后重试',
-	WAITING_REPLY: '对方尚未回复，暂时无法继续发送',
-	BLOCKED: '当前无法向对方发送消息',
-	RATE_LIMITED: '操作过于频繁，请稍后再试',
-	DEPENDENCY_UNAVAILABLE: '服务暂时不可用，请稍后重试'
-};
+export { ERROR_TEXT };
 
-/**
- * 是否运行在本地预览构建里。
- * 预览产物里带 uni-app 的 uni-cloud 客户端运行时，uniCloud 对象存在但没有关联
- * 服务空间，调用必然失败。因此由构建期常量区分，而不是看 uniCloud 是否存在。
- * typeof 保证在未定义该常量的构建（HBuilderX）里也不会抛错。
- */
-const IS_PREVIEW_BUILD = typeof __JIRUN_PREVIEW__ !== 'undefined' && __JIRUN_PREVIEW__ === true;
-
-/**
- * 云端是否可用。
- * 预览构建固定为不可用，直接走本地样例；正式构建下 uniCloud 存在即视为可用，
- * 若未绑定服务空间，调用会失败并提示可重试。
- */
-export function hasCloud() {
-	if (IS_PREVIEW_BUILD) return false;
-	return typeof uniCloud !== 'undefined' && typeof uniCloud.importObject === 'function';
-}
-
-let objectInstance = null;
-
-function contentObject() {
-	if (!objectInstance) {
-		// customUI: true —— 不弹框架自带的错误提示，由页面按错误码展示
-		objectInstance = uniCloud.importObject(CLOUD_OBJECT, { customUI: true });
-	}
-	return objectInstance;
-}
-
-function toError(code, message) {
-	const error = new Error(message || ERROR_TEXT[code] || '操作失败，请稍后重试');
-	error.code = code;
-	return error;
-}
-
-async function callCloud(method, params) {
-	let response;
-	try {
-		response = await contentObject()[method](params);
-	} catch (error) {
-		// 网络或云函数不可达：可重试
-		throw toError('DEPENDENCY_UNAVAILABLE', '网络或服务不可用，请重试');
-	}
-	if (response && response.errCode) {
-		const code = typeof response.errCode === 'string' ? response.errCode : 'DEPENDENCY_UNAVAILABLE';
-		throw toError(code, response.errMsg);
-	}
-	return { data: response ? response.data : null, localSample: false };
-}
+const call = (method, params) => callCloud(CLOUD_OBJECT, method, params);
 
 // ---------------- 本地样例分支 ----------------
 
@@ -136,7 +78,7 @@ export async function listPublic(query = {}) {
 	if (!hasCloud()) {
 		return { ...localListPublic(query), localSample: true };
 	}
-	return callCloud('listPublic', query);
+	return call('listPublic', query);
 }
 
 export async function getPublic({ id }) {
@@ -145,14 +87,14 @@ export async function getPublic({ id }) {
 		if (!item) throw toError('CONTENT_UNAVAILABLE');
 		return { data: item, localSample: true };
 	}
-	return callCloud('getPublic', { id });
+	return call('getPublic', { id });
 }
 
 export async function listMine(query = {}) {
 	if (!hasCloud()) {
 		return { ...localListMine(query), localSample: true };
 	}
-	return callCloud('listMine', query);
+	return call('listMine', query);
 }
 
 /** 写操作在无云端时一律明确失败，绝不假装成功。 */
@@ -160,7 +102,7 @@ async function requireCloud(method, params) {
 	if (!hasCloud()) {
 		throw toError('DEPENDENCY_UNAVAILABLE', '未连接云端，无法提交；本地样例仅供浏览');
 	}
-	return callCloud(method, params);
+	return call(method, params);
 }
 
 export function submitContent(payload) {

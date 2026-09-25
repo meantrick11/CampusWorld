@@ -68,6 +68,17 @@
 					<view class="author">
 						<author-bar :author="item.author" :created-at="item.createdAt"></author-bar>
 					</view>
+					<!-- 校园墙的六项互动：点赞、评论、收藏、分享在此，关注在作者区 -->
+					<view class="wall-actions" v-if="kind === 'wall'">
+						<wall-actions :content-id="item.id" :summary="summaryOf(item.id)"
+							@toggle="toggleReaction" @comment="onCommentTap" @share="shareContent(item)">
+						</wall-actions>
+					</view>
+				</view>
+
+				<!-- 评论与回复（校园墙） -->
+				<view class="card" v-if="kind === 'wall'">
+					<comment-list :content-id="item.id"></comment-list>
 				</view>
 
 				<view class="card tips">
@@ -93,6 +104,9 @@
 	import AsyncState from '@/components/AsyncState.vue'
 	import AuthorBar from '@/components/AuthorBar.vue'
 	import StatusBadge from '@/components/StatusBadge.vue'
+	import WallActions from '@/components/WallActions.vue'
+	import CommentList from '@/components/CommentList.vue'
+	import wallInteractions from '@/mixins/wall-interactions.js'
 	import { getPublic } from '@/services/content.js'
 	import { formatAmount, formatPriceType } from '@/utils/format.js'
 
@@ -100,8 +114,11 @@
 		components: {
 			AsyncState,
 			AuthorBar,
-			StatusBadge
+			StatusBadge,
+			WallActions,
+			CommentList
 		},
+		mixins: [wallInteractions],
 		data() {
 			return {
 				id: '',
@@ -165,6 +182,7 @@
 					this.item = result.data
 					this.localSample = Boolean(result.localSample)
 					uni.setNavigationBarTitle({ title: this.navTitle() })
+					this.loadSummaries([this.item])
 				} catch (error) {
 					this.retryable = error.code === 'DEPENDENCY_UNAVAILABLE'
 					this.error = error.message
@@ -182,6 +200,13 @@
 			},
 			goManage() {
 				uni.navigateTo({ url: '/pages/mine/publications' })
+			},
+			onCommentTap() {
+				// 评论列表就在本页下方，直接滚过去而不是跳转
+				uni.pageScrollTo({
+					selector: '.comments',
+					duration: 200
+				})
 			},
 			contact() {
 				// 私聊在 T08 实现；此处明确说明，不假装已可用
@@ -296,6 +321,12 @@
 	.author {
 		margin-top: 24rpx;
 		padding-top: 20rpx;
+		border-top: 1rpx solid $jr-border;
+	}
+
+	.wall-actions {
+		margin-top: 8rpx;
+		padding-top: 12rpx;
 		border-top: 1rpx solid $jr-border;
 	}
 

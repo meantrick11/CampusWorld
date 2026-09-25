@@ -20,7 +20,8 @@
 				:empty="!loading && !error && searched" empty-title="没有找到相关内容"
 				empty-hint="换个关键词，或把板块切到「全部」再试" @retry="doSearch">
 				<content-card class="item" v-for="item in items" :key="item.id" :item="item"
-					:variant="item.kind" @open="openDetail" @action="onWallAction"></content-card>
+					:variant="item.kind" :summary="summaryOf(item.id)" @open="openDetail"
+					@toggle="toggleReaction" @comment="openComments" @share="shareContent"></content-card>
 			</async-state>
 		</view>
 	</view>
@@ -29,6 +30,7 @@
 <script>
 	import AsyncState from '@/components/AsyncState.vue'
 	import ContentCard from '@/components/ContentCard.vue'
+	import wallInteractions from '@/mixins/wall-interactions.js'
 	import { BOARD_LIST } from '@/utils/status.js'
 	import { listPublic } from '@/services/content.js'
 
@@ -37,6 +39,7 @@
 			AsyncState,
 			ContentCard
 		},
+		mixins: [wallInteractions],
 		data() {
 			return {
 				boards: BOARD_LIST,
@@ -68,6 +71,7 @@
 					})
 					this.localSample = Boolean(result.localSample)
 					this.items = result.items
+					this.loadSummaries(this.items)
 				} catch (error) {
 					this.retryable = error.code === 'DEPENDENCY_UNAVAILABLE'
 					this.error = error.message
@@ -77,9 +81,6 @@
 			},
 			openDetail(item) {
 				uni.navigateTo({ url: `/pages/content/detail?id=${item.id}` })
-			},
-			onWallAction(action) {
-				uni.showToast({ title: `互动功能（${action}）将在后续任务实现`, icon: 'none' })
 			}
 		}
 	}

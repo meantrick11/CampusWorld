@@ -75,9 +75,9 @@
 					<view v-if="isVideo" class="play"></view>
 				</view>
 			</view>
-			<view class="actions">
-				<text class="action" v-for="action in wallActions" :key="action.key"
-					@click.stop="$emit('action', action.key)">{{ action.label }}</text>
+			<view class="actions" v-if="variant === 'wall'">
+				<wall-actions :content-id="item.id" :summary="summary" @toggle="$emit('toggle', $event)"
+					@comment="$emit('comment', item)" @share="$emit('share', item)"></wall-actions>
 			</view>
 		</template>
 	</view>
@@ -86,6 +86,7 @@
 <script>
 	import AuthorBar from './AuthorBar.vue'
 	import StatusBadge from './StatusBadge.vue'
+	import WallActions from './WallActions.vue'
 	import {
 		formatAmount,
 		formatPriceType
@@ -95,7 +96,8 @@
 		name: 'ContentCard',
 		components: {
 			AuthorBar,
-			StatusBadge
+			StatusBadge,
+			WallActions
 		},
 		props: {
 			item: {
@@ -106,31 +108,20 @@
 			variant: {
 				type: String,
 				default: ''
+			},
+			// 校园墙的互动计数与本人状态，由页面批量取回后传入
+			summary: {
+				type: Object,
+				default: () => ({
+					likes: 0,
+					comments: 0,
+					favorites: 0,
+					liked: false,
+					favorited: false
+				})
 			}
 		},
-		emits: ['open', 'action'],
-		data() {
-			return {
-				// 互动由 T07 实现；这里只呈现入口，点击后由页面说明
-				wallActions: [{
-						key: 'like',
-						label: '点赞'
-					},
-					{
-						key: 'comment',
-						label: '评论'
-					},
-					{
-						key: 'favorite',
-						label: '收藏'
-					},
-					{
-						key: 'share',
-						label: '分享'
-					}
-				]
-			}
-		},
+		emits: ['open', 'toggle', 'comment', 'share'],
 		computed: {
 			details() {
 				return this.item.details || {}

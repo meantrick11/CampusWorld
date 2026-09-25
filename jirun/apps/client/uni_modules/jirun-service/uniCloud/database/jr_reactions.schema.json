@@ -1,0 +1,32 @@
+{
+  "bsonType": "object",
+  "required": ["actorId", "contentId", "type", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "记录 ID，由云端生成"
+    },
+    "actorId": {
+      "bsonType": "string",
+      "description": "点赞或收藏的用户 ID，由服务端 token 校验得出"
+    },
+    "contentId": {
+      "bsonType": "string",
+      "description": "被互动的校园墙内容 ID"
+    },
+    "type": {
+      "bsonType": "string",
+      "description": "反应类型；本平台只有点赞与收藏，不含任何付费或打赏类互动",
+      "enum": ["like", "favorite"]
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "创建时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

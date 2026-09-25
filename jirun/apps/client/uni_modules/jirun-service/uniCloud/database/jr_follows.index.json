@@ -1,0 +1,22 @@
+[
+  {
+    "IndexName": "actor_target_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "actorId", "Direction": "1" },
+        { "Name": "targetUserId", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "target_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "targetUserId", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

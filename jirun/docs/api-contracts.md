@@ -183,6 +183,45 @@ Unix 毫秒。写请求携带 `requestId` 去重，编辑同时携带 `expectedV
 拒绝，调用方捕获冲突后回查已有结果，而不是直接失败。业务失败时删除该行释放键，
 因此失败不会永久占用 `requestId`。
 
+## 6.3 校园墙互动（已实现，未在真实云端验证）
+
+纯规则位于 `jirun-domain/social-policy.js`，服务位于 `jirun-domain/social-service.js`，
+契约位于 `jirun-domain/social-repository.js`，共 36 项测试。
+
+| 规则函数 | 语义 |
+|---|---|
+| `canDeleteComment` | 本人可删自己的评论；帖子作者不能删别人的评论；审核员须是布尔真值，字符串 `'true'` 不算授权 |
+| `canViewFavorites` | 收藏仅本人可见，他人即使拿到标识也拒绝 |
+| `canFollow` | 不能关注自己 |
+| `isAllowedReactionType` | 只接受 `like` 与 `favorite` |
+| `canReact` | 互动只作用于公开可见的校园墙内容（待审、下架、删除均拒绝） |
+| `isReplyingToTopLevel` | 只允许一层回复，被回复者必须是主评论 |
+
+服务方法（首个参数为服务端 actor）：
+
+| 方法 | 说明 |
+|---|---|
+| `setReaction({contentId, type, enabled, requestId})` | 显式 `enabled`，不做 toggle；返回服务端统计的 `count` |
+| `setFollow({userId, enabled, requestId})` | 同上，返回 `followers` |
+| `submitComment({contentId, parentId, body, requestId})` | 新评论进入 `pending`，不立即公开 |
+| `listComments({contentId, cursor, limit})` | 只返回已通过且未删除的评论；每条带服务端计算的 `canDelete` |
+| `deleteOwnComment({id, requestId})` | 仅本人（审核员治理通道见 T09） |
+| `listFavorites({cursor, limit})` / `listFollowing({cursor, limit})` | 只按调用者本人查询 |
+| `getProfileState({userId})` | 公开主页的关注状态与关注者数 |
+| `getInteractionSummary({contentIds})` | 批量取计数与本人状态 |
+
+**两处对契约的补充**（契约未列出，但界面必需，已在此记录）：
+`getProfileState` 与 `getInteractionSummary`。前者用于公开主页的「关注／已关注」，
+后者用于广场与详情一次取齐点赞、评论、收藏计数及本人状态，避免每条内容各发一次请求。
+两者都不接受客户端指定「查询谁」，本人状态一律按 token 得出的 actor 计算。
+
+不变量：
+
+- 计数一律由服务端从数据统计，客户端传入的任何计数值都被忽略。
+- 关系建立幂等（重复启用不产生第二行），取消幂等（重试不重复减数）。
+- 分享不改变服务端状态，不生成站内转发帖；重新访问时仍按内容可见性校验。
+- 关注或公开回复都不解锁私聊，私聊额度由联系服务单独判定。
+
 ## 7. 与验收场景的对应
 
 | SC | 场景 | 当前覆盖情况 |

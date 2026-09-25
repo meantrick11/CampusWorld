@@ -55,6 +55,12 @@
 			}
 		},
 		{
+			"path": "pages/user/profile",
+			"style": {
+				"navigationBarTitleText": "个人主页"
+			}
+		},
+		{
 			"path": "pages/uni-agree/uni-agree",
 			"style": {
 				"navigationStyle": "custom",

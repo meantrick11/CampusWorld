@@ -270,8 +270,28 @@ function validateContent(input) {
 	return { valid: errors.length === 0, errors };
 }
 
+/**
+ * 评论文本校验：非空且不超过 COMMENT_MAX 个码点。
+ * 返回去除首尾空白后的 value，避免存入库里的是带空白的原文。
+ */
+function validateComment(input) {
+	const text = typeof (input && input.body) === 'string' ? input.body.trim() : '';
+	if (text === '') {
+		return { valid: false, value: '', reason: '评论不能为空' };
+	}
+	if (codePointLength(text) > LIMITS.COMMENT_MAX) {
+		return {
+			valid: false,
+			value: text,
+			reason: `评论最多 ${LIMITS.COMMENT_MAX} 个字`
+		};
+	}
+	return { valid: true, value: text, reason: '' };
+}
+
 module.exports = {
 	validateContent,
+	validateComment,
 	LIMITS,
 	KINDS,
 	PRICE_TYPES,

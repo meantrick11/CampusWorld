@@ -1,0 +1,34 @@
+[
+  {
+    "IndexName": "actor_content_type_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "actorId", "Direction": "1" },
+        { "Name": "contentId", "Direction": "1" },
+        { "Name": "type", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "content_type",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "contentId", "Direction": "1" },
+        { "Name": "type", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "actor_type_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "actorId", "Direction": "1" },
+        { "Name": "type", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

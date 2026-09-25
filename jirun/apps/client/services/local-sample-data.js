@@ -227,4 +227,54 @@ const sampleMine = [
 	}
 ];
 
-export { sampleContents, sampleMine };
+/**
+ * 本地样例评论（均已通过审核）。
+ * 只用于查看评论列表与回复的排版；新提交的评论在样例里同样先进入待审、不公开，
+ * 与真实规则保持一致。
+ */
+const sampleComments = {
+	'sample-wall1': [{
+			id: 'sample-cm1',
+			contentId: 'sample-wall1',
+			authorId: 'u-lin',
+			body: '几点开始？想去看看。',
+			parentId: null,
+			reviewStatus: 'approved',
+			deleted: false,
+			createdAt: 1758726000000
+		},
+		{
+			id: 'sample-cm2',
+			contentId: 'sample-wall1',
+			authorId: 'u-club',
+			body: '晚上七点开始，在操场东侧。',
+			parentId: 'sample-cm1',
+			reviewStatus: 'approved',
+			deleted: false,
+			createdAt: 1758727000000
+		},
+		{
+			id: 'sample-cm3',
+			contentId: 'sample-wall1',
+			authorId: 'u-wang',
+			body: '设备可以现场体验吗？',
+			parentId: null,
+			reviewStatus: 'approved',
+			deleted: false,
+			createdAt: 1758728000000
+		}
+	],
+	'sample-wall2': [{
+		id: 'sample-cm4',
+		contentId: 'sample-wall2',
+		authorId: 'u-sun',
+		body: '谢谢，我去服务台看看。',
+		parentId: null,
+		reviewStatus: 'approved',
+		deleted: false,
+		createdAt: 1758720000000
+	}],
+	'sample-wall3': []
+};
+
+export { sampleContents, sampleMine, sampleComments };

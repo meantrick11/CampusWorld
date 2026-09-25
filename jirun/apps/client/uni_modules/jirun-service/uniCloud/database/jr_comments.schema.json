@@ -1,0 +1,44 @@
+{
+  "bsonType": "object",
+  "required": ["contentId", "authorId", "body", "reviewStatus", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "评论 ID，由云端生成"
+    },
+    "contentId": {
+      "bsonType": "string",
+      "description": "所属校园墙内容 ID"
+    },
+    "authorId": {
+      "bsonType": "string",
+      "description": "评论作者用户 ID，由服务端 token 校验得出；删除权限据此判定"
+    },
+    "body": {
+      "bsonType": "string",
+      "description": "评论正文，最多 1000 个 Unicode 码点"
+    },
+    "parentId": {
+      "bsonType": "string",
+      "description": "被回复的主评论 ID；为空表示主评论。只允许一层回复，被回复者必须是主评论"
+    },
+    "reviewStatus": {
+      "bsonType": "string",
+      "description": "审核状态；只有 approved 且未删除的评论对读者可见",
+      "enum": ["pending", "approved", "rejected"]
+    },
+    "deleted": {
+      "bsonType": "bool",
+      "description": "是否已被作者本人删除；审核员删除走治理通道并单独留痕"
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "创建时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

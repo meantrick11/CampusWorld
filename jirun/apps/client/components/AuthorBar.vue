@@ -1,5 +1,5 @@
 <template>
-	<view class="author-bar">
+	<view class="author-bar" @click.stop="openProfile">
 		<view class="avatar">
 			<!-- 真实头像需要媒体服务签发访问凭据（T05）；在此之前用首字占位 -->
 			<text class="avatar-text">{{ avatarText(author) }}</text>
@@ -38,7 +38,14 @@
 		},
 		methods: {
 			displayName,
-			avatarText
+			avatarText,
+			openProfile() {
+				const userId = this.author && this.author.userId
+				if (!userId) return
+				uni.navigateTo({
+					url: `/pages/user/profile?userId=${userId}`
+				})
+			}
 		}
 	}
 </script>

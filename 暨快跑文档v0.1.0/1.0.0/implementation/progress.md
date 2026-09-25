@@ -331,6 +331,57 @@ schema 总数由 77 变为 104，并显式列出被检查的 5 个集合名。
   上述页面仅验证了渲染与数据，未验证点击行为。
 - 互动六项（T07）、私聊（T08）、审核后台（T09）、资料与通知（T10）未开始。
 
+## T07 记录（校园墙六项互动，2026-09-25）
+
+**新增文件**
+
+- 公共模块：`jirun-domain/social-policy.js`（权限规则）、`social-repository.js`
+  （仓储契约）、`social-service.js`（互动服务）；`validation.js` 增加 `validateComment`。
+- 集合：`jr_reactions`（唯一索引 actorId+contentId+type）、`jr_follows`
+  （唯一索引 actorId+targetUserId）、`jr_comments`，三者均禁止客户端直接读写。
+- 云对象：`jirun-social`（含 `repository.js` 未实现缺口，与内容服务同样的留白）。
+- 客户端：`services/cloud-call.js`（抽取云端调用公共部分）、`services/social.js`
+  （互动适配器，含本地样例状态）、`mixins/wall-interactions.js`（四个页面共用）、
+  `components/WallActions.vue`、`components/CommentList.vue`、`pages/user/profile.vue`。
+- 测试：`tests/unit/social-policy.test.cjs`（9 项）、
+  `tests/unit/social-service.test.cjs`（27 项）、`tests/cloud/social-cases.md`（30 条待执行）。
+
+**执行命令与真实结果**
+
+| 命令 | 退出码 | 实际结果 |
+|---|---|---|
+| `npm test -- social-policy`（实现前） | 1 | 1 个文件失败，`MODULE_NOT_FOUND` |
+| `npm test -- social-policy` | 0 | 9 项通过 |
+| `npm test -- social` | 0 | 36 项通过 |
+| `npm test`（全部） | 0 | 153 项通过（T02 的 60 + T04 的 39 + T07 的 36 + 其余） |
+| `npm run check:pages` | 0 | 注册页面 30 个；解析 schema 107 个、索引 50 个；8 个 `jr_*` 集合权限已逐一检查 |
+| 浏览器实测（广场） | — | 校园墙卡片显示互动栏，评论数与样例评论条数吻合（摄影社帖显示「评论 3」） |
+| 浏览器实测（校园墙详情） | — | 互动栏 + 评论区：3 条评论含 1 条嵌套回复、回复按钮、以及「提交后需通过审核才会公开」提示 |
+| 浏览器实测（个人主页） | — | 关注按钮、关注者数、公开内容列表，以及「关注不解锁私聊」说明 |
+
+**实现中的取舍**
+
+- 点赞与收藏传明确的 `enabled` 而非 toggle，重复点击不会因请求重放而状态反转。
+- 计数只由服务端统计；测试专门用伪造的 `count: 9999` 验证客户端计数值被忽略。
+- 取消操作幂等：关系不存在时返回 0，因此重试不会重复减数。
+- 收藏与关注列表只按调用者本人查询，不存在「传别人的标识读别人收藏」的入口。
+- 评论的 `canDelete` 由服务端逐条计算并随列表返回，前端不自行推断权限。
+- 分享在小程序走原生转发（`open-type="share"`），在 H5 复制链接；
+  两者都指向原内容路径，不生成站内转发帖。
+- 互动只作用于校园墙：取送与二手不提供点赞收藏，返回 `INVALID_INPUT`。
+- 预览环境的本地样例用固定标识代表「我」，并在提示中说明状态仅存于本机；
+  这不代表登录可以被绕过，正式环境身份仍由服务端 token 决定。
+
+**未完成**
+
+- **云端互动仓储未实现**：`jirun-social/repository.js` 与内容服务同样是有意的
+  未实现缺口（D-09），需要真实服务空间才能验证唯一索引冲突与游标查询。
+- **真实并发用例未执行**：S-01（并发点赞 5 次只有一条关系）等 30 条见
+  `tests/cloud/social-cases.md`，属真实云端验收。
+- **交互仍未验证**：执行环境的内置浏览器没有可见画面，无法真实点击；
+  上述页面仅验证了渲染与数据。
+- 私聊（T08）、审核与举报（T09）、资料与通知（T10）未开始。
+
 ## 每次执行后追加
 
 每次记录日期、任务编号、变更路径、验证命令、退出码与实际结果、证据路径、

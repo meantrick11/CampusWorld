@@ -41,7 +41,8 @@
 				</view>
 				<view v-else class="flow">
 					<content-card class="flow-item" v-for="item in items" :key="item.id" :item="item"
-						:variant="item.kind" @open="openDetail" @action="onWallAction"></content-card>
+						:variant="item.kind" :summary="summaryOf(item.id)" @open="openDetail"
+						@toggle="toggleReaction" @comment="openComments" @share="shareContent"></content-card>
 				</view>
 
 				<view class="load-more" v-if="items.length">
@@ -63,6 +64,7 @@
 <script>
 	import AsyncState from '@/components/AsyncState.vue'
 	import ContentCard from '@/components/ContentCard.vue'
+	import wallInteractions from '@/mixins/wall-interactions.js'
 	import { BOARD_LIST, CATEGORY_MAP } from '@/utils/status.js'
 	import { listPublic } from '@/services/content.js'
 
@@ -71,6 +73,7 @@
 			AsyncState,
 			ContentCard
 		},
+		mixins: [wallInteractions],
 		data() {
 			return {
 				boards: BOARD_LIST,
@@ -147,6 +150,7 @@
 					this.localSample = Boolean(result.localSample)
 					this.items = append ? this.items.concat(result.items) : result.items
 					this.nextCursor = result.nextCursor
+					this.loadSummaries(this.items)
 				} catch (error) {
 					// 业务拒绝不重试；依赖与网络失败允许重试
 					this.retryable = error.code === 'DEPENDENCY_UNAVAILABLE'
@@ -189,13 +193,6 @@
 			goPublish() {
 				uni.navigateTo({
 					url: '/pages/publish/select'
-				})
-			},
-			onWallAction(action) {
-				// 六项互动由 T07 实现，这里明确告知而不是静默无响应
-				uni.showToast({
-					title: `互动功能（${action}）将在后续任务实现`,
-					icon: 'none'
 				})
 			}
 		}

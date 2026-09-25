@@ -1,0 +1,33 @@
+[
+  {
+    "IndexName": "content_parent_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "contentId", "Direction": "1" },
+        { "Name": "parentId", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "author_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "authorId", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "content_review",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "contentId", "Direction": "1" },
+        { "Name": "reviewStatus", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]
