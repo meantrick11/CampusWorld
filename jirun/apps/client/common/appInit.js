@@ -1,9 +1,6 @@
 import uniStarterConfig from '@/uni-starter.config.js';
 //应用初始化页
 // #ifdef APP
-import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
-import callCheckVersion from '@/uni_modules/uni-upgrade-center-app/utils/call-check-version';
-
 // 实现，路由拦截。当应用无访问摄像头/相册权限，引导跳到设置界面 https://ext.dcloud.net.cn/plugin?id=5095
 import interceptorChooseImage from '@/uni_modules/json-interceptor-chooseImage/js_sdk/main.js';
 interceptorChooseImage()
@@ -20,9 +17,6 @@ export default async function() {
 		}).globalData.config = uniStarterConfig;
 	}, 1)
 
-
-	// 初始化appVersion（仅app生效）
-	initAppVersion();
 
 	//clientDB的错误提示
 	function onDBError({
@@ -130,35 +124,4 @@ export default async function() {
 	});
 	// #endif
 
-}
-/**
- * // 初始化appVersion
- */
-function initAppVersion() {
-	// #ifdef APP-PLUS
-	let appid = plus.runtime.appid;
-	plus.runtime.getProperty(appid, (wgtInfo) => {
-		let appVersion = plus.runtime;
-		let currentVersion = appVersion.versionCode > wgtInfo.versionCode ? appVersion : wgtInfo;
-		getApp({
-			allowDefault: true
-		}).appVersion = {
-			...currentVersion,
-			appid,
-			hasNew: false
-		}
-		// 检查更新小红点
-		callCheckVersion().then(res => {
-			// console.log('检查是否有可以更新的版本', res);
-			if (res.result.code > 0) {
-				// 有新版本
-				getApp({
-					allowDefault: true
-				}).appVersion.hasNew = true;
-				console.log(checkUpdate());
-			}
-		})
-	});
-	// 检查更新
-	// #endif
 }

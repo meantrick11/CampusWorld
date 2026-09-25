@@ -37,24 +37,6 @@
       }
     },
     {
-      "path": "uni_modules/uni-upgrade-center/pages/version/list",
-      "style": {
-        "navigationBarTitleText": "版本列表"
-      }
-    },
-    {
-      "path": "uni_modules/uni-upgrade-center/pages/version/add",
-      "style": {
-        "navigationBarTitleText": "新版发布"
-      }
-    },
-    {
-      "path": "uni_modules/uni-upgrade-center/pages/version/detail",
-      "style": {
-        "navigationBarTitleText": "版本信息查看"
-      }
-    },
-    {
       "path": "uni_modules/uni-id-pages/pages/userinfo/deactivate/deactivate",
       "style": {
         "navigationBarTitleText": "注销账号"
@@ -243,26 +225,6 @@
           }
         },
         {
-          "path": "app/add",
-          "style": {
-            "navigationBarTitleText": "新增应用",
-            "navigationStyle": "default"
-          }
-        },
-        {
-          "path": "app/list",
-          "style": {
-            "navigationBarTitleText": "应用管理"
-          }
-        },
-        {
-          "path": "app/uni-portal/uni-portal",
-          "style": {
-            "navigationBarTitleText": "发布页管理",
-            "navigationStyle": "default"
-          }
-        },
-        {
           "path": "tag/add",
           "style": {
             "navigationBarTitleText": "新增标签"
@@ -445,34 +407,6 @@
           "path": "user/stickiness/stickiness",
           "style": {
             "navigationBarTitleText": "粘性",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pay-order/overview/overview",
-          "style": {
-            "navigationBarTitleText": "订单概况",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pay-order/list/list",
-          "style": {
-            "navigationBarTitleText": "订单明细",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pay-order/funnel/funnel",
-          "style": {
-            "navigationBarTitleText": "漏斗分析",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pay-order/ranking/ranking",
-          "style": {
-            "navigationBarTitleText": "用户价值排行",
             "enablePullDownRefresh": false
           }
         }

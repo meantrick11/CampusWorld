@@ -72,30 +72,6 @@
     "_id": "system_menu"
   },
   {
-    "menu_id": "system_app",
-    "name": "应用管理",
-    "icon": "admin-icons-manager-app",
-    "url": "/pages/system/app/list",
-    "sort": 1035,
-    "parent_id": "system_management",
-    "permission": [],
-    "enable": true,
-    "create_date": 1602662469399,
-    "_id": "system_app"
-  },
-  {
-    "menu_id": "system_update",
-    "name": "App升级中心",
-    "icon": "uni-icons-cloud-upload",
-    "url": "/uni_modules/uni-upgrade-center/pages/version/list",
-    "sort": 1036,
-    "parent_id": "system_management",
-    "permission": [],
-    "enable": true,
-    "create_date": 1656491532434,
-    "_id": "system_update"
-  },
-  {
     "menu_id": "system_tag",
     "name": "标签管理",
     "icon": "admin-icons-manager-tag",
@@ -466,65 +442,5 @@
     "sort": 2172,
     "create_date": 1638356902516,
     "_id": "uni-stat-error-app"
-  },
-  {
-    "menu_id": "uni-stat-pay",
-    "name": "支付统计",
-    "icon": "uni-icons-circle",
-    "url": "",
-    "sort": 2122,
-    "parent_id": "uni-stat",
-    "permission": [],
-    "enable": true,
-    "create_date": 1667386977981,
-    "_id": "uni-stat-pay"
-  },
-  {
-    "menu_id": "uni-stat-pay-overview",
-    "name": "概况",
-    "icon": "",
-    "url": "/pages/uni-stat/pay-order/overview/overview",
-    "sort": 21221,
-    "parent_id": "uni-stat-pay",
-    "permission": [],
-    "enable": true,
-    "create_date": 1667387038602,
-    "_id": "uni-stat-pay-overview"
-  },
-  {
-    "menu_id": "uni-stat-pay-funnel",
-    "name": "转换漏斗分析",
-    "icon": "",
-    "url": "/pages/uni-stat/pay-order/funnel/funnel",
-    "sort": 21222,
-    "parent_id": "uni-stat-pay",
-    "permission": [],
-    "enable": true,
-    "create_date": 1668430092890,
-    "_id": "uni-stat-pay-funnel"
-  },
-  {
-    "menu_id": "uni-stat-pay-ranking",
-    "name": "价值用户排行",
-    "icon": "",
-    "url": "/pages/uni-stat/pay-order/ranking/ranking",
-    "sort": 21223,
-    "parent_id": "uni-stat-pay",
-    "permission": [],
-    "enable": true,
-    "create_date": 1668430128302,
-    "_id": "uni-stat-pay-ranking"
-  },
-  {
-    "menu_id": "uni-stat-pay-order-list",
-    "name": "订单明细",
-    "icon": "",
-    "url": "/pages/uni-stat/pay-order/list/list",
-    "sort": 21224,
-    "parent_id": "uni-stat-pay",
-    "permission": [],
-    "enable": true,
-    "create_date": 1667387078947,
-    "_id": "uni-stat-pay-order-list"
   }
 ]

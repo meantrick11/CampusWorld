@@ -1,48 +1,21 @@
 {
 	"pages": [{
-			"path": "pages/list/list",
+			"path": "pages/plaza/index",
 			"style": {
-				// #ifndef APP
-				"enablePullDownRefresh": true,
-				// #endif
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "广场",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
-			"path": "pages/grid/grid",
+			"path": "pages/messages/index",
 			"style": {
-				//#ifndef MP
-				"navigationStyle": "custom"
-				//#endif
-			}
-		}, {
-			"path": "pages/list/search/search",
-			"style": {
-				"navigationBarTitleText": "搜索"
-			}
-		}, {
-			"path": "pages/list/detail",
-			"style": {
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"type": "share"
-						}],
-						"type": "transparent"
-					}
-				},
-				"h5": {
-					"titleNView": {
-						"type": "transparent"
-					}
-				},
-				"navigationBarTitleText": "文章详情"
+				"navigationBarTitleText": "消息"
 			}
 		},
 		{
-			"path": "pages/ucenter/ucenter",
+			"path": "pages/mine/index",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "我的"
 			}
 		},
 		{
@@ -53,54 +26,18 @@
 					"popGesture": "none"
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/ucenter/settings/settings",
 			"style": {
 				"navigationBarTitleText": "设置"
-			}
-		},
-		{
-			"path": "pages/ucenter/read-news-log/read-news-log",
-			"style": {
-				"navigationBarTitleText": "阅读记录",
-				"enablePullDownRefresh": true
 			}
 		}
 		// #ifdef APP
 		, {
 			"path": "pages/ucenter/about/about",
 			"style": {
-				"navigationBarTitleText": "关于",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"type": "share"
-						}]
-					}
-				}
-			}
-		},
-		{
-			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
-			"style": {
-				"disableScroll": true,
-				"app-plus": {
-					"backgroundColorTop": "transparent",
-					"background": "transparent",
-					"titleNView": false,
-					"scrollIndicator": false,
-					"popGesture": "none",
-					"animationType": "fade-in",
-					"animationDuration": 200
-
-				}
-			}
-		},
-		{
-			"path": "pages/ucenter/invite/invite",
-			"style": {
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "关于"
 			}
 		}
 		// #endif
@@ -165,24 +102,28 @@
 					"style": {
 						"navigationBarTitleText": "重置密码"
 					}
-				}, {
+				},
+				{
 					"path": "common/webview/webview",
 					"style": {
 						"enablePullDownRefresh": false,
 						"navigationBarTitleText": ""
 					}
-				}, {
+				},
+				{
 					"path": "userinfo/change_pwd/change_pwd",
 					"style": {
 						"enablePullDownRefresh": false,
 						"navigationBarTitleText": "修改密码"
 					}
-				}, {
+				},
+				{
 					"path": "register/register-by-email",
 					"style": {
 						"navigationBarTitleText": "邮箱验证码注册"
 					}
-				}, {
+				},
+				{
 					"path": "retrieve/retrieve-by-email",
 					"style": {
 						"navigationBarTitleText": "通过邮箱重置密码"
@@ -218,44 +159,40 @@
 		},
 		// #endif
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-starter",
+		"navigationBarTitleText": "暨快跑",
 		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#F8F8F8",
+		"backgroundColor": "#F6F8F7",
 		"enablePullDownRefresh": false,
-		// "maxWidth":375,
 		"rpxCalcMaxDeviceWidth": 375,
 		"rpxCalcBaseDeviceWidth": 375
-		// "rpxCalcIncludeWidth":0
 	},
 	"condition": {
 		"list": [{
-				"path": "pages/list/detail"
-			}, {
-				"path": "pages/list/list"
-			},
-			{
-				"path": "pages/ucenter/settings/settings"
-			}
-		],
-		"current": 1
+			"path": "pages/plaza/index"
+		}, {
+			"path": "pages/messages/index"
+		}, {
+			"path": "pages/mine/index"
+		}],
+		"current": 0
 	},
 	"tabBar": {
 		"color": "#7A7E83",
-		"selectedColor": "#007AFF",
+		"selectedColor": "#147D64",
 		"borderStyle": "black",
 		"backgroundColor": "#FFFFFF",
 		"list": [{
-			"pagePath": "pages/list/list",
+			"pagePath": "pages/plaza/index",
 			"iconPath": "static/tabbar/list.png",
 			"selectedIconPath": "static/tabbar/list_active.png",
-			"text": "列表"
+			"text": "广场"
 		}, {
-			"pagePath": "pages/grid/grid",
+			"pagePath": "pages/messages/index",
 			"iconPath": "static/tabbar/grid.png",
 			"selectedIconPath": "static/tabbar/grid_active.png",
-			"text": "宫格"
+			"text": "消息"
 		}, {
-			"pagePath": "pages/ucenter/ucenter",
+			"pagePath": "pages/mine/index",
 			"iconPath": "static/tabbar/me.png",
 			"selectedIconPath": "static/tabbar/me_active.png",
 			"text": "我的"

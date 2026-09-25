@@ -1,0 +1,29 @@
+/**
+ * 暨快跑设计令牌
+ * 来源：1.0.0/docs/frontend-design-v1.0.0.md（浅色背景、白色卡片、深色文字、青绿色主色）
+ * 该文件由 uni.scss 全局引入，业务页面可直接使用下列变量。
+ */
+
+/* 主色与状态色 */
+$jr-primary: #147D64;
+$jr-primary-light: #E6F2EF;
+$jr-warning: #D98324;
+$jr-danger: #C0392B;
+$jr-success: #2E9E6B;
+
+/* 背景与卡片 */
+$jr-page-bg: #F6F8F7;
+$jr-card-bg: #FFFFFF;
+$jr-border: #E3E8E6;
+
+/* 文字 */
+$jr-text-main: #172B26;
+$jr-text-sub: #5F706A;
+$jr-text-placeholder: #9AA8A3;
+
+/* 尺寸 */
+$jr-radius-card: 16rpx;
+$jr-radius-btn: 44rpx;
+$jr-tap-min: 88rpx;
+$jr-font-body: 30rpx;
+$jr-font-title: 34rpx;

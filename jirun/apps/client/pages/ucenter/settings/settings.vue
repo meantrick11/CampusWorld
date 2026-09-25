@@ -231,7 +231,7 @@
 								uni.setLocale(language)
 							}
 							uni.reLaunch({
-								url: '/pages/list/list',
+								url: '/pages/plaza/index',
 								complete: () => {
 									uni.$emit("changeLanguage",language)
 								}
