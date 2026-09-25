@@ -24,7 +24,7 @@
 | T01 工程与工具链 | 本地完成待联调 | 见下节 T01 记录 | 安装 HBuilderX 与微信开发者工具后补真实构建 |
 | T02 规则与数据契约 | 本地完成待联调 | 60 项规则测试真实通过；见下节 T02 记录 | T03 外部条件就绪后进入真实接入 |
 | T03 真实接入样板 | 受阻 | 无 AppID、无服务空间、无 uni-im | 取得外部条件后核验登录、媒体与聊天 |
-| T04 内容服务 | 未开始 | 无 | 建立四类信息服务 |
+| T04 内容服务 | 进行中 | 服务、仓储契约、schema 与索引已完成，99 项测试通过；云对象待写 | 完成 jirun-content／jirun-admin 云对象 |
 | T05 媒体与审核管道 | 未开始 | 无 | 验证访问控制与视频 |
 | T06 用户端主流程 | 未开始 | 无 | 实现发布浏览管理 |
 | T07 校园墙互动 | 未开始 | 无 | 六项互动与权限 |
@@ -147,6 +147,68 @@
 
 **下一步可执行动作**：T04 建立 `content-service.js` 与内存仓储测试
 （依赖 T02 已完成，不依赖 T03 的真实云端条件）。
+
+## T04 记录（进行中，2026-09-25）
+
+**已完成部分**
+
+- 新建 `jirun-domain/content-repository.js`：仓储契约与 `assertRepository`，
+  列出必须由实现保证的语义（版本比较写入、新建原子性、requestId 唯一性、
+  列表返回已解析行、游标稳定）。
+- 新建 `jirun-domain/content-service.js`：`createContentService({repository, clock})`
+  实现 `submitContent`、`editContent`、`updateStatus`、`deleteContent`、
+  `getPublic`、`listPublic`、`listMine`、`decideContent`。
+- 新建 `tests/support/memory-content-repository.cjs`：内存仓储，带真实的版本比较、
+  唯一 requestId 预留语义与稳定游标，不是返回固定数据的 mock。
+- 新建 `tests/unit/content-service.test.cjs`：39 项测试。
+- 新建 4 个 schema 与 4 个索引文件：`jr_contents`、`jr_content_revisions`、
+  `jr_decisions`、`jr_audit_logs`。全部 `permission` 四项为 false，
+  客户端不能直接读写，只能经云对象。
+- 扩展 `scripts/check-pages.cjs`：新增「业务集合必须禁止客户端直接读写」检查，
+  并校验 schema 与索引文件可解析、索引定义结构完整。
+
+**执行命令与真实结果**
+
+| 命令 | 退出码 | 实际结果 |
+|---|---|---|
+| `npm test -- content-service`（实现前） | 1 | 1 个文件、0 通过、1 失败，原因为 `MODULE_NOT_FOUND` |
+| `npm test -- content-service` | 0 | 39 项通过、0 失败 |
+| `npm test`（全部） | 0 | 99 项通过、0 失败 |
+| `npm run check:pages` | 0 | 注册页面与菜单无悬空引用；解析 schema 77 个、索引文件 40 个；`jr_*` 集合已禁止客户端直接读写 |
+
+**实现过程中发现并修正的问题**
+
+1. 首版 `submitContent` 在建根内容后再写一次以回填待审指针，导致版本号从 1
+   变成 2，与「新内容版本号为 1」不符。改为把根内容与首个版本一次原子写入，
+   由仓储把新版本 id 回填到待审指针上。
+2. 首版 `updateStatus` 把空字符串状态当成「保持原状态」，等于静默接受非法输入。
+   改为区分「未传状态」（允许，用于只调整剩余数量）与「显式传空或非字符串」
+   （拒绝 `INVALID_INPUT`）。
+3. `editContent` 首版把未提交的字段当成清空，导致只改标题的局部编辑会因
+   `details` 缺失而校验失败。改为未提交字段沿用当前最新版本。
+4. 校验脚本首版用严格 `JSON.parse` 读取 schema，结果模板自带的 24 个
+   `uni-stat-*.schema.json` 全部报错——**uniCloud 的 schema 文件允许注释与尾逗号**，
+   不是严格 JSON。改用脚本内已有的宽容解析后通过。
+
+**设计决定**
+
+- 闲置数量归零时业务状态自动置为 `closed`（而不是 `sold`／`gifted`），
+  既满足「数量归零退出有效列表」，又符合「未明确已售或已赠时使用 closed」，
+  且公开列表只需过滤 `businessStatus !== 'closed'`，无需联表。
+- 编辑已公开内容时 `visibility` 保持 `published`，只更新 `pendingRevisionId`，
+  因此旧公开版本在新版本通过前继续可读，待审正文不会泄漏。
+- 审核的 `targetId` 是版本 id，必须等于当前 `pendingRevisionId`，
+  否则以 `VERSION_CONFLICT` 拒绝，避免用旧版本审核结果发布后来修改的版本。
+- `requestId` 采用「预留 → 完成」：业务失败会释放预留；同键并发请求收到可重试的
+  `DEPENDENCY_UNAVAILABLE`，因此响应丢失后重试既不会产生第二条内容，
+  也不会被误判为参数错误。
+
+**尚未完成**
+
+- `jirun-content` 与 `jirun-admin` 云对象（含真实 uniCloud 仓储实现）尚未编写。
+- 真实云端用例未执行：越权写入、读取未公开版本、并发幂等都需要真实服务空间，
+  记录见 `jirun/tests/cloud/content-cases.md`（待写）。
+- 因此 T04 只到「本地可验证」，不能标记为「真实联调通过」。
 
 ## 每次执行后追加
 

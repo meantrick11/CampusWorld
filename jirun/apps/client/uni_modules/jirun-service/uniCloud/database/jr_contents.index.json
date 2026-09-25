@@ -1,0 +1,33 @@
+[
+  {
+    "IndexName": "kind_visibility_status",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "kind", "Direction": "1" },
+        { "Name": "visibility", "Direction": "1" },
+        { "Name": "businessStatus", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "author_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "authorId", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "visibility_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "visibility", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

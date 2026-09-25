@@ -1,0 +1,44 @@
+{
+  "bsonType": "object",
+  "required": ["action", "targetType", "targetId", "actorId", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "日志 ID，由云端生成"
+    },
+    "action": {
+      "bsonType": "string",
+      "description": "操作标识，例如 content.approve、content.reject；后续治理动作继续追加"
+    },
+    "targetType": {
+      "bsonType": "string",
+      "description": "操作对象类型",
+      "enum": ["content", "comment", "report", "appeal", "user", "media", "config"]
+    },
+    "targetId": {
+      "bsonType": "string",
+      "description": "操作对象 ID"
+    },
+    "revisionId": {
+      "bsonType": "string",
+      "description": "涉及的具体版本 ID，无版本概念时为空"
+    },
+    "actorId": {
+      "bsonType": "string",
+      "description": "操作者用户 ID，由服务端身份得出"
+    },
+    "reason": {
+      "bsonType": "string",
+      "description": "操作原因，供复核与追溯使用"
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "操作时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

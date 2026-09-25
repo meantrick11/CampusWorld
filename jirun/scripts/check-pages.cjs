@@ -147,11 +147,64 @@ function checkApp(appDir, label) {
 checkApp(path.join(root, 'apps/client'), 'client');
 checkApp(path.join(root, 'apps/admin'), 'admin');
 
-console.log('页面与引用一致性检查');
+// 5. 业务集合必须禁止客户端直接读写，只能经云对象访问
+function checkSchemas(appDir, label) {
+  const databaseDirs = [
+    path.join(appDir, 'uniCloud-aliyun/database'),
+    path.join(appDir, 'uniCloud-cloud/database')
+  ];
+  for (const dir of databaseDirs) {
+    if (!fs.existsSync(dir)) continue;
+    for (const file of fs.readdirSync(dir)) {
+      const full = path.join(dir, file);
+      if (file.endsWith('.index.json')) {
+        try {
+          const parsed = JSON.parse(tolerantJson(fs.readFileSync(full, 'utf8')));
+          if (!Array.isArray(parsed)) problems.push(`[${label}] 索引文件不是数组：${file}`);
+          else {
+            for (const index of parsed) {
+              if (!index.IndexName || !index.MgoKeySchema || !Array.isArray(index.MgoKeySchema.MgoIndexKeys)) {
+                problems.push(`[${label}] 索引定义缺少 IndexName 或 MgoKeySchema：${file}`);
+              }
+            }
+            indexes.push(`${label}/${file}: ${parsed.length} 个索引`);
+          }
+        } catch (error) {
+          problems.push(`[${label}] 索引文件无法解析：${file}（${error.message}）`);
+        }
+        continue;
+      }
+      if (!file.endsWith('.schema.json')) continue;
+      try {
+        const schema = JSON.parse(tolerantJson(fs.readFileSync(full, 'utf8')));
+        schemas.push(`${label}/${file}`);
+        if (!file.startsWith('jr_')) continue;
+        const permission = schema.permission || {};
+        for (const action of ['read', 'create', 'update', 'delete']) {
+          if (permission[action] !== false) {
+            problems.push(
+              `[${label}] 业务集合 ${file} 的 permission.${action} 不是 false，客户端可能绕过云对象直接访问`
+            );
+          }
+        }
+      } catch (error) {
+        problems.push(`[${label}] schema 无法解析：${file}（${error.message}）`);
+      }
+    }
+  }
+}
+
+const indexes = [];
+const schemas = [];
+checkSchemas(path.join(root, 'apps/client'), 'client');
+checkSchemas(path.join(root, 'apps/admin'), 'admin');
+notes.push(`解析 schema ${schemas.length} 个，索引文件 ${indexes.length} 个；jr_* 集合已禁止客户端直接读写`);
+
+console.log('页面、引用与集合权限一致性检查');
 notes.forEach(n => console.log('  · ' + n));
 if (problems.length) {
   console.log(`\n发现 ${problems.length} 个问题：`);
   problems.forEach(p => console.log('  [✗] ' + p));
   process.exit(1);
 }
-console.log('\n[✓] 未发现悬空引用');
+console.log('\n[✓] 未发现问题');

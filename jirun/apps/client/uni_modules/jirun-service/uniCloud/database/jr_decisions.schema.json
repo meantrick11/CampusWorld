@@ -1,0 +1,44 @@
+{
+  "bsonType": "object",
+  "required": ["contentId", "revisionId", "action", "actorId", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "决定 ID，由云端生成"
+    },
+    "contentId": {
+      "bsonType": "string",
+      "description": "被审核的根内容 ID"
+    },
+    "revisionId": {
+      "bsonType": "string",
+      "description": "被审核的具体版本 ID；审核必须针对当前待审版本"
+    },
+    "revision": {
+      "bsonType": "int",
+      "description": "被审核版本的版本号，便于留痕回溯"
+    },
+    "action": {
+      "bsonType": "string",
+      "description": "审核动作白名单",
+      "enum": ["approve", "reject", "remove", "restore", "uphold"]
+    },
+    "reason": {
+      "bsonType": "string",
+      "description": "审核原因，驳回时用于告知作者"
+    },
+    "actorId": {
+      "bsonType": "string",
+      "description": "执行审核的管理员用户 ID，由服务端权限校验得出"
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "决定时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

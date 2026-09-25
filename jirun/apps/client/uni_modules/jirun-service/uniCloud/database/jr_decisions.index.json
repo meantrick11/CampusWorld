@@ -1,0 +1,12 @@
+[
+  {
+    "IndexName": "content_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "contentId", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

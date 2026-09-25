@@ -1,0 +1,57 @@
+{
+  "bsonType": "object",
+  "required": ["authorId", "kind", "visibility", "version", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "内容 ID，由云端生成"
+    },
+    "authorId": {
+      "bsonType": "string",
+      "description": "作者用户 ID，由服务端 token 校验得出，不接受客户端传入"
+    },
+    "kind": {
+      "bsonType": "string",
+      "description": "信息类型",
+      "enum": ["delivery", "idle", "wanted", "wall"]
+    },
+    "publishedRevisionId": {
+      "bsonType": "string",
+      "description": "当前公开的版本 ID，未公开时为 null"
+    },
+    "pendingRevisionId": {
+      "bsonType": "string",
+      "description": "待审核的版本 ID，无待审版本时为 null"
+    },
+    "visibility": {
+      "bsonType": "string",
+      "description": "可见性指针：只有 published 且版本通过的组合才允许公开读取",
+      "enum": ["draft", "pending", "published", "rejected", "removed", "deleted"]
+    },
+    "businessStatus": {
+      "bsonType": "string",
+      "description": "业务状态（取送 seeking/contacted/completed/closed，闲置 available/sold/gifted/closed，求购 seeking/fulfilled/closed）。校园墙无业务状态，存 null"
+    },
+    "version": {
+      "bsonType": "int",
+      "description": "乐观锁版本号，每次写操作递增；客户端编辑必须携带 expectedVersion"
+    },
+    "deletedByAuthor": {
+      "bsonType": "bool",
+      "description": "是否由作者本人删除。复核时据此拒绝恢复作者已删除的内容"
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "创建时间，服务端生成的 Unix 毫秒"
+    },
+    "updatedAt": {
+      "bsonType": "long",
+      "description": "最后更新时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

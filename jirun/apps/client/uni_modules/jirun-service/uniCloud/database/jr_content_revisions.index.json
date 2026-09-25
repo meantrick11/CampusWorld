@@ -1,0 +1,22 @@
+[
+  {
+    "IndexName": "content_revision_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "contentId", "Direction": "1" },
+        { "Name": "revision", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "content_review_status",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "contentId", "Direction": "1" },
+        { "Name": "reviewStatus", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]
