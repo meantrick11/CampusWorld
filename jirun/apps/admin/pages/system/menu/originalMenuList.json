@@ -405,5 +405,89 @@
     "url": "/pages/uni-stat/error/app/app",
     "sort": 2172,
     "create_date": 1638356902516
+  },
+  {
+    "menu_id": "jirun_moderation",
+    "name": "内容治理",
+    "icon": "uni-icons-flag",
+    "url": "",
+    "sort": 1100,
+    "parent_id": "",
+    "permission": [],
+    "enable": true,
+    "create_date": 1758730000000,
+    "_id": "jirun_moderation"
+  },
+  {
+    "menu_id": "jirun_overview",
+    "name": "治理概览",
+    "icon": "",
+    "url": "/pages/jirun/overview",
+    "sort": 1110,
+    "parent_id": "jirun_moderation",
+    "permission": [],
+    "enable": true,
+    "create_date": 1758730000000,
+    "_id": "jirun_overview"
+  },
+  {
+    "menu_id": "jirun_content",
+    "name": "内容审核",
+    "icon": "",
+    "url": "/pages/jirun/content",
+    "sort": 1120,
+    "parent_id": "jirun_moderation",
+    "permission": [],
+    "enable": true,
+    "create_date": 1758730000000,
+    "_id": "jirun_content"
+  },
+  {
+    "menu_id": "jirun_reports",
+    "name": "举报处理",
+    "icon": "",
+    "url": "/pages/jirun/reports",
+    "sort": 1130,
+    "parent_id": "jirun_moderation",
+    "permission": [],
+    "enable": true,
+    "create_date": 1758730000000,
+    "_id": "jirun_reports"
+  },
+  {
+    "menu_id": "jirun_appeals",
+    "name": "复核处理",
+    "icon": "",
+    "url": "/pages/jirun/appeals",
+    "sort": 1140,
+    "parent_id": "jirun_moderation",
+    "permission": [],
+    "enable": true,
+    "create_date": 1758730000000,
+    "_id": "jirun_appeals"
+  },
+  {
+    "menu_id": "jirun_users",
+    "name": "账号限制",
+    "icon": "",
+    "url": "/pages/jirun/users",
+    "sort": 1150,
+    "parent_id": "jirun_moderation",
+    "permission": [],
+    "enable": true,
+    "create_date": 1758730000000,
+    "_id": "jirun_users"
+  },
+  {
+    "menu_id": "jirun_config",
+    "name": "平台配置",
+    "icon": "",
+    "url": "/pages/jirun/config",
+    "sort": 1160,
+    "parent_id": "jirun_moderation",
+    "permission": [],
+    "enable": true,
+    "create_date": 1758730000000,
+    "_id": "jirun_config"
   }
 ]

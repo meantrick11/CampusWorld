@@ -222,6 +222,55 @@ Unix 毫秒。写请求携带 `requestId` 去重，编辑同时携带 `expectedV
 - 分享不改变服务端状态，不生成站内转发帖；重新访问时仍按内容可见性校验。
 - 关注或公开回复都不解锁私聊，私聊额度由联系服务单独判定。
 
+## 6.4 内容治理（已实现，未在真实云端验证）
+
+纯规则位于 `jirun-domain/moderation-policy.js`，服务位于
+`jirun-domain/moderation-service.js`，契约位于 `jirun-domain/moderation-repository.js`，
+共 44 项测试。`jirun-admin` 云对象承载管理侧方法，`jirun-moderation` 承载用户侧方法。
+
+| 规则函数 | 语义 |
+|---|---|
+| `canRestore` | 作者已删除的内容不能恢复；当前版本未通过审核也不能恢复 |
+| `canReview` | 审核权限须是服务端布尔 `isReviewer`，字符串 `'true'` 不算 |
+| `canReadPrivateChats` | 恒为 false：本版本不提供管理员浏览他人私聊的能力 |
+| `isAllowedAdminAction` | 按目标类型校验动作白名单，不存在通用动作 |
+| `isAllowedRestrictionScope` | 账号限制只允许 `publish` 与 `chat` |
+| `isAllowedReportReason` | 举报原因取值白名单 |
+| `canAppealDecision` | 必须指向已产生的决定且尚未申请过 |
+| `isForbiddenConfigKey` | 配置键不允许出现付费能力开关 |
+
+动作白名单：`content` → approve／reject／remove／restore；`comment` → approve／reject／remove；
+`media` → approve／reject；`report` → uphold／reject；`appeal` → approve／reject。
+
+服务方法（首个参数为服务端 actor）：
+
+| 方法 | 说明 |
+|---|---|
+| `submitReport({targetType,targetId,reason,description,requestId})` | 仅登录用户；**只写举报记录，不改内容可见性** |
+| `listMyCases({cursor,limit})` | 我提交的举报 + 对我的内容作出的决定（含下架原因） |
+| `appeal({decisionId,explanation,requestId})` | 仅内容作者；受理即登记，**可见性不变** |
+| `listQueue({queue,cursor,limit})` | 管理侧；queue 为 content／comment／report／appeal |
+| `decide({targetType,targetId,expectedVersion,action,reason,requestId})` | 管理侧；校验版本与动作白名单，写决定与审计日志 |
+| `restrictUser({userId,scope,enabled,reason,requestId})` | 管理侧；限制与解除都必须写明原因并留痕 |
+| `isRestricted({userId,scope})` | 供发布与私聊服务判断是否被限制 |
+| `updateConfig({key,value,expectedVersion,requestId})` / `listConfig()` | 配置含版本检查；付费类键被拒绝 |
+| `getMetrics()` | 只统计发布与审核积压，**无交易流水** |
+
+不变量：
+
+- 审核针对具体版本：`targetId` 必须是当前 `pendingRevisionId`，否则以
+  `VERSION_CONFLICT` 拒绝，避免用旧版本的审核结果发布用户后来修改的版本。
+- 举报受理与下架分离：提交举报不改可见性；只有 `decide` 的 `uphold`／`remove` 才下架。
+- 同一举报不能重复处理（状态不是 `submitted` 即拒绝）。
+- 复核受理不改可见性；复核通过仍需 `canRestore` 通过，作者已删除的内容一律拒绝恢复。
+- 决定与审计日志成对写入，含目标版本、原因与操作者。
+- 账号限制不含自动封号、处罚期限累计或自动超时处罚。
+- 媒体审核与媒体下架在媒体任务中实现，当前返回明确的 `DEPENDENCY_UNAVAILABLE`，
+  不会假装通过。
+
+`jirun-admin.decide` 现在由治理服务承载（T04 曾提供内容审核的最小分支，
+其实现与测试仍保留在 `content-service.decideContent`，供发布流程使用）。
+
 ## 7. 与验收场景的对应
 
 | SC | 场景 | 当前覆盖情况 |

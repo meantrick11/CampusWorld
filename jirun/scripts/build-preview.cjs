@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * 本地 H5 预览构建入口。
+ * 本地 H5 预览构建入口。默认构建用户端，传 --app admin 构建管理端。
  *
  * 必须显式把工作目录切到 apps/client-preview 再启动 uni CLI，原因是
  * vite-plugin-uni 的两处行为都取决于「当前工作目录」：
@@ -10,29 +10,47 @@
  *   - 用「工作目录/vite.config.js」作为配置（dist/cli/utils.js:52）
  * 用 `npm --prefix` 不会改变脚本的工作目录，因此这里自行切换。
  *
- * 产物输出到 jirun/dist/h5（被 .gitignore 忽略），不用于发布。
+ * 两个工程共用同一份预览配置与入口文件：入口里的 `/main` 会被插件映射到
+ * UNI_INPUT_DIR 下的 main.js，因此换一个 UNI_INPUT_DIR 就能构建另一个工程。
+ *
+ * 产物输出到 jirun/dist/（被 .gitignore 忽略），不用于发布。
  */
 
 const path = require('node:path');
 const fs = require('node:fs');
 const { spawnSync } = require('node:child_process');
 
+const appArg = process.argv.find((value) => value.startsWith('--app='));
+const app = appArg ? appArg.split('=')[1] : 'client';
+if (!['client', 'admin'].includes(app)) {
+	console.error(`不支持的工程：${app}（只支持 client 或 admin）`);
+	process.exit(1);
+}
+
 const previewDir = path.resolve(__dirname, '../apps/client-preview');
 const uniBin = path.join(previewDir, 'node_modules/@dcloudio/vite-plugin-uni/bin/uni.js');
+const inputDir = path.resolve(previewDir, `../${app}`);
+const outputDir = path.resolve(__dirname, app === 'admin' ? '../dist/h5-admin' : '../dist/h5');
 
 if (!fs.existsSync(uniBin)) {
 	console.error(`未找到 uni CLI：${uniBin}`);
 	console.error('请先在 apps/client-preview 目录执行 npm install');
 	process.exit(1);
 }
+if (!fs.existsSync(path.join(inputDir, 'main.js'))) {
+	console.error(`未找到工程入口：${path.join(inputDir, 'main.js')}`);
+	process.exit(1);
+}
+
+console.log(`预览构建：${app} → ${outputDir}`);
 
 const result = spawnSync(process.execPath, [uniBin, 'build', '-p', 'h5'], {
 	cwd: previewDir,
 	stdio: 'inherit',
 	env: {
 		...process.env,
-		UNI_INPUT_DIR: path.resolve(previewDir, '../client'),
-		UNI_OUTPUT_DIR: path.resolve(__dirname, '../dist/h5')
+		UNI_INPUT_DIR: inputDir,
+		UNI_OUTPUT_DIR: outputDir
 	}
 });
 

@@ -1,0 +1,32 @@
+[
+  {
+    "IndexName": "status_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "status", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "reporter_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "reporterId", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "-1" }
+      ],
+      "MgoIsUnique": false
+    }
+  },
+  {
+    "IndexName": "target",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "targetType", "Direction": "1" },
+        { "Name": "targetId", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "bsonType": "object",
+  "required": ["decisionId", "contentId", "appellantId", "status", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "复核申请 ID，由云端生成"
+    },
+    "decisionId": {
+      "bsonType": "string",
+      "description": "被复核的处理决定 ID；同一决定只能申请一次"
+    },
+    "contentId": {
+      "bsonType": "string",
+      "description": "受影响的内容 ID"
+    },
+    "appellantId": {
+      "bsonType": "string",
+      "description": "申请人用户 ID；仅内容作者可申请"
+    },
+    "explanation": {
+      "bsonType": "string",
+      "description": "申请说明，最多 500 个码点"
+    },
+    "status": {
+      "bsonType": "string",
+      "description": "受理即登记为 submitted，此时内容可见性不变；通过也不代表作者已删除的内容能恢复",
+      "enum": ["submitted", "approved", "rejected"]
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "申请时间，服务端生成的 Unix 毫秒"
+    },
+    "decidedAt": {
+      "bsonType": "long",
+      "description": "处理时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

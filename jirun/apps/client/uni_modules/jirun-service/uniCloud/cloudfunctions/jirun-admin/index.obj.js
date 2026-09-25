@@ -3,27 +3,32 @@
 /**
  * jirun-admin 云对象：管理端操作入口。
  *
- * T04 只实现内容审核的最小分支（approve / reject），供真实发布流程验证使用；
- * 举报、复核、账号限制、配置与概览在 T09 扩展。
+ * 覆盖内容／评论／举报／复核的审核决定、账号限制、配置与概览。
+ * 媒体审核与媒体下架属媒体任务，当前返回明确的不可用提示。
  *
  * 权限：审核能力由服务端 token 的角色或权限点得出（见 jirun-domain/actor-policy.js），
  * 普通用户调用会被拒绝，客户端无法通过传参获得审核身份。
+ * 本云对象不提供浏览他人私聊的能力。
+ *
+ * ⚠️ 真实云端状态：治理仓储尚未完成，在真实服务空间中调用会返回
+ * DEPENDENCY_UNAVAILABLE。原因与实现指引见 ../jirun-moderation/repository.js。
  */
 
 const uniID = require('uni-id-common');
-const { createContentService, ok, failure, toActor } = require('jirun-domain');
-const { createUniCloudContentRepository } = require('../jirun-content/repository.js');
+const { createModerationService, ok, failure, toActor } = require('jirun-domain');
+const { createUniCloudModerationRepository } = require('../jirun-moderation/repository.js');
 
-let service = null;
+let moderationService = null;
 
 function getService() {
-	if (!service) {
-		service = createContentService({
-			repository: createUniCloudContentRepository(),
+	if (!moderationService) {
+		moderationService = createModerationService({
+			// 内容审核与治理共用同一套仓储契约：审核决定既要动内容也要留痕
+			repository: createUniCloudModerationRepository(),
 			clock: () => Date.now()
 		});
 	}
-	return service;
+	return moderationService;
 }
 
 async function resolveActor() {
@@ -34,20 +39,29 @@ async function resolveActor() {
 	return toActor(tokenResult);
 }
 
-module.exports = {
-	/** contracts.md：decide({ targetType, targetId, expectedVersion, action, reason, requestId }) */
-	async decide(params = {}) {
+function handle(method) {
+	return async function handled(params = {}) {
 		try {
-			if (params.targetType !== 'content') {
-				const error = new Error('当前只支持内容审核，举报与复核将在治理任务中实现');
-				error.code = 'INVALID_INPUT';
-				throw error;
-			}
 			const actor = await resolveActor.call(this);
-			return ok(await getService().decideContent(actor, params));
+			return ok(await getService()[method](actor, params));
 		} catch (error) {
-			console.error('[jirun-admin] decide 失败', error);
+			console.error(`[jirun-admin] ${method} 失败`, error);
 			return failure(error);
 		}
-	}
+	};
+}
+
+module.exports = {
+	// 审核决定：内容、评论、举报、复核
+	decide: handle('decide'),
+	listQueue: handle('listQueue'),
+	// 账号限制：人工限制发布／私聊及解除，均需原因并留痕
+	restrictUser: handle('restrictUser'),
+	listRestrictions: handle('listRestrictions'),
+	isRestricted: handle('isRestricted'),
+	// 配置：分类、区域、容量等；不允许出现付费能力开关
+	updateConfig: handle('updateConfig'),
+	listConfig: handle('listConfig'),
+	// 概览：只统计发布与审核积压，无交易流水
+	getMetrics: handle('getMetrics')
 };

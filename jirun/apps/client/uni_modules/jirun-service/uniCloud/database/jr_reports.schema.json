@@ -1,0 +1,50 @@
+{
+  "bsonType": "object",
+  "required": ["reporterId", "targetType", "targetId", "reason", "status", "createdAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "举报 ID，由云端生成"
+    },
+    "reporterId": {
+      "bsonType": "string",
+      "description": "举报人用户 ID，由服务端 token 校验得出"
+    },
+    "targetType": {
+      "bsonType": "string",
+      "description": "被举报对象类型",
+      "enum": ["content", "comment", "user"]
+    },
+    "targetId": {
+      "bsonType": "string",
+      "description": "被举报对象 ID"
+    },
+    "reason": {
+      "bsonType": "string",
+      "description": "举报原因取值",
+      "enum": ["spam", "fraud", "harassment", "illegal", "false_info", "other"]
+    },
+    "description": {
+      "bsonType": "string",
+      "description": "补充说明，最多 500 个码点"
+    },
+    "status": {
+      "bsonType": "string",
+      "description": "处理状态；提交举报本身不改变被举报内容的可见性",
+      "enum": ["submitted", "upheld", "rejected"]
+    },
+    "createdAt": {
+      "bsonType": "long",
+      "description": "提交时间，服务端生成的 Unix 毫秒"
+    },
+    "decidedAt": {
+      "bsonType": "long",
+      "description": "处理时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

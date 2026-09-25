@@ -11,13 +11,11 @@
  * 该文件不进入正式产物，也不参与发布。
  */
 (function () {
-	// 注意：本脚本先于应用模块执行，但因为项目含 uniCloud 模块，打包产物里带
-	// uni-app 的 uni-cloud 客户端运行时，它会在稍后把 window.uniCloud 整个替换掉。
-	// 因此「是否已连接云端」不能靠挂在这个对象上的标记判断，预览构建改用
-	// 构建期常量 __JIRUN_PREVIEW__（见 apps/client-preview/vite.config.js）。
-	// 这里的作用只是保证应用模块初始化时 uniCloud 一定存在，不抛未定义错误。
-	if (globalThis.uniCloud) return;
-
+	// 注意：本脚本先于应用模块执行，但产物里带 uni-app 的 uni-cloud 客户端运行时，
+	// 它会在稍后把 window.uniCloud 整个替换掉。因此这里不依赖「是否已存在」，
+	// 而是用属性拦截：无论运行时何时赋值，都把它的 database / importObject
+	// 换成预览占位，避免应用启动阶段因没有服务空间而崩溃（管理端的 store 就会这么做）。
+	// 「是否已连接云端」由构建期常量 __JIRUN_PREVIEW__ 判定，不靠这个对象。
 	function notConnected(name) {
 		return function () {
 			return Promise.reject(new Error('预览环境未连接 uniCloud，' + name + ' 需要真实服务空间'));
@@ -92,13 +90,36 @@
 		);
 	}
 
-	globalThis.uniCloud = {
-		database: database,
-		importObject: importObject,
-		interceptObject: function () {},
-		callFunction: notConnected('callFunction'),
-		getCurrentUserInfo: notConnected('getCurrentUserInfo'),
-		on: function () {},
-		off: function () {}
-	};
+	function applyPreviewStubs(target) {
+		if (!target) return;
+		target.database = database;
+		target.importObject = importObject;
+		target.callFunction = notConnected('callFunction');
+		target.getCurrentUserInfo = notConnected('getCurrentUserInfo');
+		target.interceptObject = function () {};
+		target.on = function () {};
+		target.off = function () {};
+	}
+
+	var current = globalThis.uniCloud;
+	try {
+		Object.defineProperty(globalThis, 'uniCloud', {
+			configurable: true,
+			get: function () {
+				return current;
+			},
+			set: function (value) {
+				current = value;
+				applyPreviewStubs(value);
+			}
+		});
+	} catch (error) {
+		// 无法拦截时至少处理当前值
+	}
+
+	applyPreviewStubs(current);
+	if (!current) {
+		globalThis.uniCloud = {};
+		applyPreviewStubs(globalThis.uniCloud);
+	}
 })();

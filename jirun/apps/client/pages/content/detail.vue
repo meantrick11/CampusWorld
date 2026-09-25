@@ -84,6 +84,7 @@
 				<view class="card tips">
 					<text class="tip">信息由发布者自行维护，平台不介入交易与交付。</text>
 					<text class="tip">遇到问题可以举报，处理期间该信息保持原有可见性。</text>
+					<text class="tip-link" @click="goReport" v-if="item">举报这条信息</text>
 				</view>
 			</view>
 		</async-state>
@@ -206,6 +207,12 @@
 				uni.pageScrollTo({
 					selector: '.comments',
 					duration: 200
+				})
+			},
+			goReport() {
+				const summary = encodeURIComponent(`${this.item.title || this.item.body || ''}`.slice(0, 40))
+				uni.navigateTo({
+					url: `/pages/report/create?targetType=content&targetId=${this.item.id}&summary=${summary}`
 				})
 			},
 			contact() {
@@ -382,6 +389,14 @@
 		font-size: $jr-font-small;
 		color: $jr-text-sub;
 		line-height: 1.8;
+	}
+
+	.tip-link {
+		display: block;
+		font-size: $jr-font-small;
+		color: $jr-primary;
+		line-height: 1.8;
+		margin-top: 8rpx;
 	}
 
 	.bottom-bar {

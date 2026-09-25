@@ -9,7 +9,9 @@
     "check:pages": "node scripts/check-pages.cjs",
     "verify:evidence": "node scripts/verify-evidence.cjs",
     "preview:build": "node scripts/build-preview.cjs",
-    "preview:serve": "node scripts/serve-preview.cjs"
+    "preview:build:admin": "node scripts/build-preview.cjs --app=admin",
+    "preview:serve": "node scripts/serve-preview.cjs client",
+    "preview:serve:admin": "node scripts/serve-preview.cjs admin"
   },
   "//preview": "preview:build 与 preview:serve 只用于在没有 HBuilderX 的机器上查看界面（H5）。正式构建、云函数上传与云空间关联仍以 HBuilderX 打开 apps/client 为准。",
   "engines": {

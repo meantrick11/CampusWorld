@@ -1,0 +1,35 @@
+{
+  "bsonType": "object",
+  "required": ["key", "version", "updatedAt"],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "记录 ID，由云端生成"
+    },
+    "key": {
+      "bsonType": "string",
+      "description": "配置键。平台完全免费，不允许出现支付、钱包、充值、提现、会员、抽成、打赏类配置项"
+    },
+    "value": {
+      "bsonType": "object",
+      "description": "配置内容；分类、区域、容量、文本上限、举报原因等"
+    },
+    "version": {
+      "bsonType": "int",
+      "description": "配置版本号，修改时必须携带 expectedVersion"
+    },
+    "updatedBy": {
+      "bsonType": "string",
+      "description": "最后修改的管理员用户 ID"
+    },
+    "updatedAt": {
+      "bsonType": "long",
+      "description": "修改时间，服务端生成的 Unix 毫秒"
+    }
+  }
+}

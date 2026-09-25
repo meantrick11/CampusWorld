@@ -5,6 +5,42 @@
       "path": "pages/index/index"
     },
     {
+      "path": "pages/jirun/overview",
+      "style": {
+        "navigationBarTitleText": "治理概览"
+      }
+    },
+    {
+      "path": "pages/jirun/content",
+      "style": {
+        "navigationBarTitleText": "内容审核"
+      }
+    },
+    {
+      "path": "pages/jirun/reports",
+      "style": {
+        "navigationBarTitleText": "举报处理"
+      }
+    },
+    {
+      "path": "pages/jirun/appeals",
+      "style": {
+        "navigationBarTitleText": "复核处理"
+      }
+    },
+    {
+      "path": "pages/jirun/users",
+      "style": {
+        "navigationBarTitleText": "账号限制"
+      }
+    },
+    {
+      "path": "pages/jirun/config",
+      "style": {
+        "navigationBarTitleText": "平台配置"
+      }
+    },
+    {
       "path": "pages/demo/icons/icons",
       "style": {
         "navigationBarTitleText": "图标"

@@ -55,6 +55,18 @@
 			}
 		},
 		{
+			"path": "pages/report/create",
+			"style": {
+				"navigationBarTitleText": "举报"
+			}
+		},
+		{
+			"path": "pages/report/history",
+			"style": {
+				"navigationBarTitleText": "举报与处理"
+			}
+		},
+		{
 			"path": "pages/user/profile",
 			"style": {
 				"navigationBarTitleText": "个人主页"

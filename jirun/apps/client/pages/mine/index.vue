@@ -39,6 +39,11 @@
 						url: '/pages/publish/select'
 					},
 					{
+						key: 'cases',
+						name: '举报与处理记录',
+						url: '/pages/report/history'
+					},
+					{
 						key: 'favorites',
 						name: '收藏与关注（待实现）',
 						url: ''

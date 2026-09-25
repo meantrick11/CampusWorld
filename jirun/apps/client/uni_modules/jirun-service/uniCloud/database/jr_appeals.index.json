@@ -1,0 +1,21 @@
+[
+  {
+    "IndexName": "decision_unique",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "decisionId", "Direction": "1" }
+      ],
+      "MgoIsUnique": true
+    }
+  },
+  {
+    "IndexName": "status_created",
+    "MgoKeySchema": {
+      "MgoIndexKeys": [
+        { "Name": "status", "Direction": "1" },
+        { "Name": "createdAt", "Direction": "1" }
+      ],
+      "MgoIsUnique": false
+    }
+  }
+]

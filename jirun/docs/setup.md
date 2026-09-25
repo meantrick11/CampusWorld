@@ -141,6 +141,30 @@ npm run preview:serve   # 启动本地服务，默认 http://127.0.0.1:5180/
   `docs/decisions.md` D-10 记录：CLI 的 JS 条件编译只覆盖 `mp-weixin`、
   平台插件集按「工作目录的 package.json 依赖名」加载、预览案缺少 uniCloud。
 
+### 5.1 管理端预览
+
+同一套工具链也能构建管理端，通过 `UNI_INPUT_DIR` 指向 `apps/admin`：
+
+```bash
+cd jirun
+npm run preview:build:admin   # 编译到 jirun/dist/h5-admin
+npm run preview:serve:admin   # 启动本地服务，默认 http://127.0.0.1:5181/
+```
+
+两点与用户端不同，必须知道：
+
+1. **资源路径带 `/admin/` 前缀**。uni-admin 的 `manifest.json` 把
+   `h5.router.base` 设为 `/admin/`，预览服务已按该前缀提供文件，与真实部署一致。
+2. **管理端登录依赖云端，预览进不去后台**。uni-admin 先要账号密码登录
+   （走 uni-id 云函数），没有服务空间就无法完成，因此预览会停在登录页。
+   治理页面可以通过**整页加载带 hash 的地址**直接打开，例如
+   `http://127.0.0.1:5181/#/pages/jirun/overview`，
+   其余页面同理替换为 `content`／`reports`／`appeals`／`users`／`config`。
+   注意：初次加载后再用路由跳转会被登录守卫拦回登录页，需要重新整页加载。
+   这只影响预览浏览，不代表后台权限实现有问题——权限判定在服务端。
+
+管理端预览同样**不能**验证登录、审核落库与菜单数据（菜单来自云端集合）。
+
 ## 6. 当前未验证事项
 
 以下事项本机尚无条件执行，未获得任何真实结果：
