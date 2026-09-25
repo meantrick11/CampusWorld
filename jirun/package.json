@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "jirun-workspace",
+  "version": "1.0.0",
+  "description": "暨快跑 · 纯公益校园信息发布平台（uni-app Vue3 + uniCloud）",
+  "scripts": {
+    "doctor": "node scripts/doctor.cjs",
+    "test": "node scripts/run-tests.cjs",
+    "check:pages": "node scripts/check-pages.cjs",
+    "verify:evidence": "node scripts/verify-evidence.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,15 @@
+# 本地凭据与个人工具配置（不进仓库）
+.local/
+
+# HBuilderX / uni-app 构建产物
+unpackage/
+dist/
+dist-*/
+
+# 依赖
+node_modules/
+
+# 编辑器
+.idea/
+.vscode/
+*.swp
