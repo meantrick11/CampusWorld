@@ -1,7 +1,7 @@
 /**
  * 暨快跑设计令牌
  * 来源：1.0.0/docs/frontend-design-v1.0.0.md（浅色背景、白色卡片、深色文字、青绿色主色）
- * 该文件由 uni.scss 全局引入，业务页面可直接使用下列变量。
+ * 该文件由 uni.scss 全局引入，业务页面可直接使用下列变量与 mixin。
  */
 
 /* 主色与状态色 */
@@ -24,6 +24,40 @@ $jr-text-placeholder: #9AA8A3;
 /* 尺寸 */
 $jr-radius-card: 16rpx;
 $jr-radius-btn: 44rpx;
+$jr-radius-tag: 8rpx;
 $jr-tap-min: 88rpx;
 $jr-font-body: 30rpx;
 $jr-font-title: 34rpx;
+$jr-font-small: 24rpx;
+$jr-gap: 24rpx;
+
+/**
+ * 底部安全区留白。
+ * 小程序的 tabBar 由微信原生渲染，页面内容不会进入安全区；但自定义底栏、
+ * 悬浮发布按钮与全屏详情页需要自行避让 iPhone 的底部横条。
+ */
+@mixin jr-safe-bottom($extra: 0rpx) {
+	padding-bottom: calc(#{$extra} + constant(safe-area-inset-bottom));
+	padding-bottom: calc(#{$extra} + env(safe-area-inset-bottom));
+}
+
+/** 顶部安全区留白，用于自定义导航栏。 */
+@mixin jr-safe-top($extra: 0rpx) {
+	padding-top: calc(#{$extra} + constant(safe-area-inset-top));
+	padding-top: calc(#{$extra} + env(safe-area-inset-top));
+}
+
+/** 单行省略。 */
+@mixin jr-ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/** 多行省略。 */
+@mixin jr-ellipsis-lines($lines: 2) {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $lines;
+}

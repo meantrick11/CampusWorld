@@ -11,6 +11,11 @@
  * 该文件不进入正式产物，也不参与发布。
  */
 (function () {
+	// 注意：本脚本先于应用模块执行，但因为项目含 uniCloud 模块，打包产物里带
+	// uni-app 的 uni-cloud 客户端运行时，它会在稍后把 window.uniCloud 整个替换掉。
+	// 因此「是否已连接云端」不能靠挂在这个对象上的标记判断，预览构建改用
+	// 构建期常量 __JIRUN_PREVIEW__（见 apps/client-preview/vite.config.js）。
+	// 这里的作用只是保证应用模块初始化时 uniCloud 一定存在，不抛未定义错误。
 	if (globalThis.uniCloud) return;
 
 	function notConnected(name) {

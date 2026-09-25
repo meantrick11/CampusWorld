@@ -76,5 +76,14 @@ function uniCloudPreviewShim() {
 }
 
 module.exports = {
+	/**
+	 * 构建期常量：告诉应用这是预览构建、没有服务空间。
+	 * 不能用「给 window.uniCloud 挂标记」的方式：项目含 uniCloud 模块，产物里带
+	 * uni-app 的 uni-cloud 客户端运行时，它会在内联脚本之后把 window.uniCloud 整体替换掉，
+	 * 标记会丢失（已实测）。构建期常量不受运行时替换影响。
+	 */
+	define: {
+		__JIRUN_PREVIEW__: 'true'
+	},
 	plugins: [uniCloudPreviewShim(), uniJsPreprocess(), uni()]
 };

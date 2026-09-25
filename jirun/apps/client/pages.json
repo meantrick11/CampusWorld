@@ -19,6 +19,42 @@
 			}
 		},
 		{
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
+		{
+			"path": "pages/content/detail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "pages/publish/select",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		},
+		{
+			"path": "pages/publish/edit",
+			"style": {
+				"navigationBarTitleText": "发布信息"
+			}
+		},
+		{
+			"path": "pages/publish/result",
+			"style": {
+				"navigationBarTitleText": "发布结果"
+			}
+		},
+		{
+			"path": "pages/mine/publications",
+			"style": {
+				"navigationBarTitleText": "我的发布"
+			}
+		},
+		{
 			"path": "pages/uni-agree/uni-agree",
 			"style": {
 				"navigationStyle": "custom",
